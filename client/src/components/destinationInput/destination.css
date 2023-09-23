@@ -72,6 +72,7 @@
 
 
 .searchBar{
+    
     flex: 5;
     width: 100%;
     display: flex;
@@ -91,7 +92,7 @@
 
 .option{
     color: black;
-    padding-right: 2vw;
+    margin-right: 2vw;
     cursor: pointer;
     display: flex;
     align-items: center;

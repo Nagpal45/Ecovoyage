@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import './navbar.css'
+import {useNavigate} from 'react-router-dom'
 
 export default function Navbar() {
-    const [activeOption, setActiveOption] = useState('home');
+    const [activeOption, setActiveOption] = useState('');
+    const navigate = useNavigate();
 
     const handleScroll = () => {
         const scrollY = window.scrollY;
@@ -25,17 +27,30 @@ export default function Navbar() {
       }, []);
     
       const handleOptionClick = (sectionId) => {
+        
         if (sectionId === 'home') {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          navigate("/")
+          setTimeout(() => {
+            window.scrollTo({ top: 1, behavior: 'smooth' });
+          }, 0);
         } 
         if (sectionId === 'discover') {
-          window.scrollTo({ top: 670, behavior: 'smooth' });
+          navigate("/")
+          setTimeout(() => {
+            window.scrollTo({ top: 670, behavior: 'smooth' });
+          }, 0);
         } 
         if (sectionId === 'about') {
-          window.scrollTo({ top: 1347, behavior: 'smooth' });
+          navigate("/")
+          setTimeout(() => {
+            window.scrollTo({ top: 1347, behavior: 'smooth' });
+          }, 0);
         } 
         if (sectionId === 'faqs') {
-          window.scrollTo({ top: 2080, behavior: 'smooth' });
+          navigate("/")
+          setTimeout(() => {
+            window.scrollTo({ top: 2080, behavior: 'smooth' });
+          }, 0);
         } 
       };
 

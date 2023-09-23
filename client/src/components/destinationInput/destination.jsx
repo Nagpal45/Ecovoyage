@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./destination.css";
 import TextField from "@material-ui/core/TextField";
 import {
@@ -13,12 +13,10 @@ import Button from "@material-ui/core/Button";
 import Typewriter from "typewriter-effect";
 import { makeStyles } from "@material-ui/core";
 
-
-
 const useStyles = makeStyles((theme) => ({
   customTextField: {
     width: "65%",
-    
+
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
         borderColor: "black",
@@ -26,16 +24,66 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "2vw",
         margin: "auto",
       },
-      '&.Mui-focused fieldset': {
+      "&.Mui-focused fieldset": {
         borderColor: "gray",
         borderWidth: "0.2vw",
-
       },
     },
+  },
+  selectedOption: {
+    borderBottom: "0.3vw solid #000",
+  },
+  recommendationList: {
+    position: "absolute",
+    top:"5.5vw",
+    width: "60%",
+    zIndex: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+
+  },
+  recommendationItem: {
+    padding: "0.5rem",
+    cursor: "pointer",
   },
 }));
 
 export default function Destination() {
+  const [activeOption, setActiveOption] = useState("all");
+  const [searchText, setSearchText] = useState("");
+  const [recommendations, setRecommendations] = useState([]);
+
+  const recommendationData = {
+    all: ["Recommendation 1", "Recommendation 2", "Recommendation 3"],
+    accommodation: ["Accommodation 1", "Accommodation 2", "Accommodation 3"],
+    transportation: [
+      "Transportation 1",
+      "Transportation 2",
+      "Transportation 3",
+    ],
+    activities: ["Activity 1", "Activity 2", "Activity 3"],
+  };
+
+  const handleOptionClick = (option) => {
+    setActiveOption(option);
+    setSearchText("");
+    setRecommendations([]);
+  };
+
+  const handleInputChange = (event) => {
+    const inputText = event.target.value;
+    setSearchText(inputText);
+
+    const filteredRecommendations = recommendationData[activeOption]
+      .filter((recommendation) =>
+        recommendation.toLowerCase().includes(inputText.toLowerCase())
+      )
+      .slice(0, 5);
+
+    setRecommendations(filteredRecommendations);
+  };
+
   const classes = useStyles();
   return (
     <div className="destination" id="destination">
@@ -66,19 +114,39 @@ export default function Destination() {
           />
         </div>
         <div className="options">
-          <div className="option">
+          <div
+            className={`option ${
+              activeOption === "all" ? classes.selectedOption : ""
+            }`}
+            onClick={() => handleOptionClick("all")}
+          >
             <Category className="optionIcon" />
             <span className="optionName">Search all</span>
           </div>
-          <div className="option">
+          <div
+            className={`option ${
+              activeOption === "accommodation" ? classes.selectedOption : ""
+            }`}
+            onClick={() => handleOptionClick("accommodation")}
+          >
             <Home className="optionIcon" />
-            <span className="optionName">Accomodation</span>
+            <span className="optionName">Accommodation</span>
           </div>
-          <div className="option">
+          <div
+            className={`option ${
+              activeOption === "transportation" ? classes.selectedOption : ""
+            }`}
+            onClick={() => handleOptionClick("transportation")}
+          >
             <EmojiTransportation className="optionIcon" />
             <span className="optionName">Transportation</span>
           </div>
-          <div className="option">
+          <div
+            className={`option ${
+              activeOption === "activities" ? classes.selectedOption : ""
+            }`}
+            onClick={() => handleOptionClick("activities")}
+          >
             <DirectionsBike className="optionIcon" />
             <span className="optionName">Activities</span>
           </div>
@@ -117,9 +185,24 @@ export default function Destination() {
                 height: "3.5vw",
               },
             }}
-            placeholder="Search"
+            placeholder={`Search ${activeOption ? `for ${activeOption}` : ""}`}
             fullWidth
+            value={searchText}
+            onChange={handleInputChange}
           />
+           {recommendations.length > 0 && (
+            <div className={classes.recommendationList}>
+              {recommendations.map((recommendation, index) => (
+                <div
+                  key={index}
+                  className={classes.recommendationItem}
+                  onClick={() => setSearchText(recommendation)}
+                >
+                  {recommendation}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <img src="/images/down.png" alt="" className="downArrow" />
       </div>
