@@ -45,19 +45,19 @@ export default function Destination() {
         </div>
         <div className="options">
           <div className="option">
-            <Category />
+            <Category className="optionIcon" />
             <span className="optionName">Search all</span>
           </div>
           <div className="option">
-            <Home />
+            <Home className="optionIcon"/>
             <span className="optionName">Accomodation</span>
           </div>
           <div className="option">
-            <EmojiTransportation />
+            <EmojiTransportation className="optionIcon"/>
             <span className="optionName">Transportation</span>
           </div>
           <div className="option">
-            <DirectionsBike />
+            <DirectionsBike className="optionIcon"/>
             <span className="optionName">Activities</span>
           </div>
         </div>
@@ -75,10 +75,12 @@ export default function Destination() {
                   <Button
                     variant="contained"
                     style={{
-                      borderRadius: "20px", // Adjust border radius
-                      fontSize: "1.1vw",
+                      borderRadius: "1.8vw",
+                      fontSize: "0.9vw",
                       backgroundColor: "#34e0a1",
                       color: "#000000",
+                      fontFamily: "QuickSand",
+                      fontWeight: "bold",
                     }}
                   >
                     search
@@ -86,7 +88,8 @@ export default function Destination() {
                 </InputAdornment>
               ),
               style: {
-                borderRadius: "25px",
+                height: "3.5vw",
+                borderRadius: "2vw",
                 fontSize: "1.5vw",
                 width: "65%",
                 margin: "auto",
@@ -97,6 +100,9 @@ export default function Destination() {
             fullWidth
           />
         </div>
+        <a href="#discover">
+          <img src="/images/down.png" alt="" className="downArrow" />
+        </a>
       </div>
     </div>
   );

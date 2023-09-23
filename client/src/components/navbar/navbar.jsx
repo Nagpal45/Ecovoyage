@@ -19,7 +19,7 @@ export default function Navbar() {
             </ul>
         </div>
         <div className="right">
-            <button className='signin'>Sign In</button>
+            <button className='signin'>Sign in</button>
         </div>
     </div>
   )
