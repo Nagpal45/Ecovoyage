@@ -1,14 +1,14 @@
 .destination{
     width: 100%;
     margin: 0;padding: 0;
-    height: calc(100vh - 5vw);
+    height: calc(100vh - 4.5vw);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     font-family: 'Quicksand', sans-serif;
     font-weight: 500;
-    padding-top: 1vw;
+    
 }
 
 
@@ -47,7 +47,7 @@
   }
 
 .header{
-    flex: 3;
+    flex: 4;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -91,7 +91,7 @@
 
 .option{
     color: black;
-    padding-right: 2.3vw;
+    padding-right: 2vw;
     cursor: pointer;
     display: flex;
     align-items: center;
