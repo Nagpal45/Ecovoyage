@@ -36,12 +36,20 @@ export default function Destination() {
     };
   }, []);
 
+  const scrollToDestination = () => {
+      window.scrollTo({
+        top: 670, 
+        behavior: "smooth", 
+      });
+  }
+  
 
   const handleOptionClick = (option) => {
     setActiveOption(option);
     const newRecommendations = generateRecommendations(option, searchQuery);
     setRecommendations(newRecommendations);
   };
+  
 
   const handleInputChange = (event) => {
     const query = event.target.value;
@@ -62,6 +70,7 @@ export default function Destination() {
         "Hotels in Paris",
         "Luxury resorts in Bali",
         "Cabin rentals in the Rockies",
+        "Car pool in Berlin"
       ],
       activities: [
         "Biking trails near you",
@@ -157,7 +166,7 @@ export default function Destination() {
             <input
               type="text"
               className="searchInput"
-              placeholder="Search"
+              placeholder={"Search for "+activeOption }
               value={searchQuery}
               onChange={handleInputChange}
               onFocus={handleInputFocus} 
@@ -168,15 +177,16 @@ export default function Destination() {
           {document.activeElement ===
             document.querySelector(".searchInput") && isInputFocused && recommendations.length > 0 && (
             <ul className="recommendations">
-              {recommendations.map((item, index) => (
+              {recommendations.slice(0, 4).map((item, index) => (
                 <li key={index} className="recommendationItem">
+                  <Search className="searchIcon" />
                   {item}
                 </li>
               ))}
             </ul>
           )}
         </div>
-        <img src="/images/down.png" alt="" className="downArrow" />
+        <img src="/images/down.png" alt="" className="downArrow" onClick={scrollToDestination}/>
       </div>
     </div>
   );

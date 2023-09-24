@@ -59,7 +59,9 @@ export default function Navbar() {
     <div className='navbar'>
         <div className='left'>
             <div className='logo'>
-            <span className='logo'>EcoVoyage</span>
+            <img src="/images/logo.png" alt="logo" className='logoimg'/>
+            <span className='boldlogo'>Eco</span>
+            <span className='logosimple'>Voyage</span>
             </div>
         </div>
         <div className="center">

@@ -47,7 +47,7 @@
   }
 
 .header{
-    flex: 4;
+    flex: 3;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -108,6 +108,7 @@
 }
 
 .downArrow{
+  cursor: pointer;
     width: 2.5vw;
     animation: jump 2s infinite, blink 2s infinite;
 }
@@ -141,22 +142,24 @@
     width: 60%;
     height: 2.5vw;
     align-items: center;
-    background-color: #fff;
-    border: 1px solid #ccc;
+    border: 0.3vw solid black;
     border-radius: 2vw;
-    padding: 5px;
+    padding: 0.4vw;
+    
   }
 
   
   .searchInputContainer:focus-within {
     border-radius: 2vw 2vw 0 0;
+    background-color: rgba(212, 212, 212, 0.5);
+    border: 0.2vw solid black;
   }
 
   
   .searchIcon {
     color: #888;
     padding-right: 1vw;
-    padding-left: 0.5vw;
+    
   }
   .search{
     padding-right: 1vw;
@@ -167,7 +170,11 @@
     border: none;
     outline: none;
     width: 100%;
-    padding: 5px;
+    padding: 0.5vw;
+    background: none;
+    font-size: 1.3vw;
+    font-family: quicksand;
+    font-weight: 500;
   }
 
 
@@ -178,25 +185,27 @@
     flex-direction: column;
     align-items: flex-start;
     width: 60%;
-    background-color: #fff;
-    border: 1px solid #ccc;
+   background-color: rgba(255, 255, 255, 0.5);
+    border: 0.2vw solid black;
     border-top: none;
-    padding: 5px;
+    padding: 0.4vw;
     list-style: none;
     margin: 0;
-    max-height: 150px;
+    max-height: 11vw;
   }
   
   .recommendationItem {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-left: 5px;
-    
+    margin-left: 0.5vw;
+    width: 100vh;
     cursor: pointer;
-    width: 100%;
+    padding: 0.5vw;
+    font-size: 1.2vw;
   }
   
   .recommendationItem:hover {
-    background-color: #f2f2f2;
+    background-color: rgba(175, 174, 174, 0.2);
+    border-radius: 2vw;
   }
