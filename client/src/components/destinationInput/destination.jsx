@@ -13,10 +13,6 @@ export default function Destination() {
   const [activeOption, setActiveOption] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [recommendations, setRecommendations] = useState([]);
-
-  
-
-
   const [isInputFocused, setInputFocus] = useState(false);
 
   const inputRef = useRef(null);
@@ -29,7 +25,7 @@ export default function Destination() {
     }, 100); 
   };
   useEffect(() => {
-    const initialRecommendations = generateRecommendations("all", searchQuery);
+    const initialRecommendations = generateRecommendations(activeOption, "");
     setRecommendations(initialRecommendations);
 
     const handleClickOutside = (event) => {
@@ -43,7 +39,7 @@ export default function Destination() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [searchQuery]);
+  }, [activeOption]);
 
   const scrollToDestination = () => {
       window.scrollTo({
