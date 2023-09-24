@@ -14,27 +14,36 @@ export default function Destination() {
   const [searchQuery, setSearchQuery] = useState("");
   const [recommendations, setRecommendations] = useState([]);
 
+  
+
+
   const [isInputFocused, setInputFocus] = useState(false);
 
   const inputRef = useRef(null);
-  // Handle focus and blur events of the input field
   const handleInputFocus = () => {
     setInputFocus(true);
   };
   const handleInputBlur = () => {
-    setInputFocus(false);
+    setTimeout(() => {
+      setInputFocus(false);
+    }, 100); 
   };
   useEffect(() => {
+    const initialRecommendations = generateRecommendations("all", searchQuery);
+    setRecommendations(initialRecommendations);
+
     const handleClickOutside = (event) => {
-      if (inputRef.current && !inputRef.current.contains(event.target)) {
-        setInputFocus(false);
-      }
+      setTimeout(() => {
+        if (inputRef.current && !inputRef.current.contains(event.target)) {
+          setInputFocus(false);
+        }
+      }, 100);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [searchQuery]);
 
   const scrollToDestination = () => {
       window.scrollTo({
@@ -87,9 +96,18 @@ export default function Destination() {
     const matchingRecommendations = dummyData[selectedOption].filter((item) =>
       item.toLowerCase().includes(query.toLowerCase())
     );
+    if (query.trim() !== "") {
+      matchingRecommendations.push(query);
+    }
 
     return matchingRecommendations || [];
   }
+
+  const handleRecommendationClick = (recommendation) => {
+    setSearchQuery(recommendation);
+    setRecommendations([]);
+  };
+
   return (
     <div className="destination" id="destination">
       <div className="wrapper">
@@ -166,7 +184,7 @@ export default function Destination() {
             <input
               type="text"
               className="searchInput"
-              placeholder={"Search for "+activeOption }
+              placeholder={`Search for ${activeOption}`}
               value={searchQuery}
               onChange={handleInputChange}
               onFocus={handleInputFocus} 
@@ -174,14 +192,15 @@ export default function Destination() {
               ref={inputRef} 
             />
           </div>
-          {document.activeElement ===
-            document.querySelector(".searchInput") && isInputFocused && recommendations.length > 0 && (
+          {isInputFocused && recommendations.length > 0 && (
             <ul className="recommendations">
               {recommendations.slice(0, 4).map((item, index) => (
-                <li key={index} className="recommendationItem">
+                <div key={index} className="recommendationItem" 
+                onClick={() => handleRecommendationClick(item)}
+                 >
                   <Search className="searchIcon" />
                   {item}
-                </li>
+                </div>
               ))}
             </ul>
           )}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './navbar.css'
-import {useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 export default function Navbar() {
     const [activeOption, setActiveOption] = useState('');
@@ -58,11 +58,13 @@ export default function Navbar() {
   return (
     <div className='navbar'>
         <div className='left'>
+          <Link to='/'>
             <div className='logo'>
             <img src="/images/logo.png" alt="logo" className='logoimg'/>
             <span className='boldlogo'>Eco</span>
             <span className='logosimple'>Voyage</span>
             </div>
+          </Link>
         </div>
         <div className="center">
             <ul className='list'>
