@@ -149,7 +149,7 @@
     -webkit-backdrop-filter: blur(10px);
     border:1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    transition: border-radius 0.5s ease;
+    transition: border-radius 1.5s ease;
   }
 
   
@@ -184,30 +184,25 @@
 
   
   .recommendations {
-    z-index: 10;
     border-radius: 0 0 2vw 2vw;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     width: 60%;
-    border-top: none;
     padding: 0.4vw;
     margin: 0;
     max-height: auto;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border:1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   }
   
   .recommendationItem {
-    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-left: 0.5vw;
-    width: 100vh;
+    width: 98%;
     cursor: pointer;
     padding: 0.5vw;
     font-size: 1.2vw;
