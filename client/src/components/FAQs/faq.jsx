@@ -15,22 +15,22 @@ const [active, setActive] = useState(null)
 
   return (
     <div className='faq' id="faqs">
-     <div className='heading'>Some Frequently Asked Question</div>
+     <div className='heading'>Some Frequently Asked Questions</div>
       <div className="accordion">
      
-      </div>
 
       {question.map((item, i) => (
-        <div className='item'>
+        <div className='item' key={i}>
           <div className='title' onClick={()=> toggle(i)}>
             <h2>{item.question}</h2>
-           <span className='plus'>{active == i ? '-' : '+' }</span>
+           <span className='plus'>{active === i ? '-' : '+' }</span>
           </div>
-          <div className={active == i ? 'answer show' : 'answer' }>
+          <div className={active === i ? 'answer show' : 'answer' }>
             {item.answer}
           </div>
         </div>
       ))}
+      </div>
     </div>
   )
 }

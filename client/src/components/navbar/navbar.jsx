@@ -13,7 +13,7 @@ export default function Navbar() {
         } else if (scrollY < 1300) {
           setActiveOption('discover');
         } else if (scrollY < 1900) {
-          setActiveOption('about');
+          setActiveOption('testimonials');
         } else {
           setActiveOption('faqs');
         }
@@ -40,7 +40,7 @@ export default function Navbar() {
             window.scrollTo({ top: 670, behavior: 'smooth' });
           }, 0);
         } 
-        if (sectionId === 'about') {
+        if (sectionId === 'testimonials') {
           navigate("/")
           setTimeout(() => {
             window.scrollTo({ top: 1347, behavior: 'smooth' });
@@ -74,7 +74,7 @@ export default function Navbar() {
         </li>
 
         <li className={activeOption === 'discover' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('discover')}>Discover</li>
-        <li className={activeOption === 'about' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('about')}>About Us</li>
+        <li className={activeOption === 'testimonials' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('testimonials')}>Testimonials</li>
         <li className={activeOption === 'faqs' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('faqs')}>FAQs</li>
             </ul>
         </div>

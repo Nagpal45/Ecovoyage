@@ -1,5 +1,4 @@
 import React from "react";
-import logo from './images/logo.png';
 import './footer.css';
 export default function Footer() {
   return (
@@ -9,7 +8,7 @@ export default function Footer() {
           <div className="me-5 d-none d-lg-block">
             <span>Get connected with us on social networks:</span>
           </div>
-          <div>
+          {/* <div>
             <a href="" className="me-4 link-secondary">
               <i className="fab fa-facebook-f"></i>
             </a>
@@ -28,7 +27,7 @@ export default function Footer() {
             <a href="" className="me-4 link-secondary">
               <i className="fab fa-github"></i>
             </a>
-          </div>
+          </div> */}
         </section>
         <section className="">
           <div className="container text-center text-md-start mt-5">
