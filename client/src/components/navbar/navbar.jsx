@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import './navbar.css'
 import {Link, useNavigate} from 'react-router-dom'
+import Signin from '../signIn/signIn';
+
 
 export default function Navbar() {
     const [activeOption, setActiveOption] = useState('');
+    const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleScroll = () => {
@@ -54,6 +57,13 @@ export default function Navbar() {
         } 
       };
 
+      const openSignInModal = () => {
+        setIsSignInModalOpen(true);
+      };
+    
+      const closeSignInModal = () => {
+        setIsSignInModalOpen(false);
+      };
 
   return (
     <div className='navbar'>
@@ -79,8 +89,9 @@ export default function Navbar() {
             </ul>
         </div>
         <div className="right">
-            <button className='signin'>Sign in</button>
+            <button className='signin' onClick={openSignInModal}>Sign in</button>
         </div>
+        {isSignInModalOpen && <Signin onClose={closeSignInModal} />}
     </div>
     
   )
