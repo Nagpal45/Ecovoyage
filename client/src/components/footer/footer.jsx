@@ -35,28 +35,24 @@ export default function Footer() {
             <div className="row mt-3">
               <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                 <h6 className="text-uppercase fw-bold mb-4">
-                  <i className="fas fa-gem me-3 text-secondary"></i>Company name
+                  <i className="fas fa-gem me-3 text-secondary"></i>EcoVoyage
                 </h6>
                 <p>
-                  Here you can use rows and columns to organize your footer content. Lorem ipsum
-                  dolor sit amet, consectetur adipisicing elit.
+                Prioritizing eco-conscious travel for memorable experiences with minimal carbon emissions.
                 </p>
               </div>
               <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                 <h6 className="text-uppercase fw-bold mb-4">
-                  Products
+                  Services
                 </h6>
                 <p>
-                  <a href="#!" className="text-reset">Angular</a>
+                  <a href="#!" className="text-reset">Accommodation</a>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">React</a>
+                  <a href="#!" className="text-reset">Transportation</a>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">Vue</a>
-                </p>
-                <p>
-                  <a href="#!" className="text-reset">Laravel</a>
+                  <a href="#!" className="text-reset">Activities</a>
                 </p>
               </div>
               <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
@@ -64,15 +60,8 @@ export default function Footer() {
                   Useful links
                 </h6>
                 <p>
-                  <a href="#!" className="text-reset">Pricing</a>
-                </p>
-                <p>
                   <a href="#!" className="text-reset">Settings</a>
-                </p>
-                <p>
-                  <a href="#!" className="text-reset">Orders</a>
-                </p>
-                <p>
+                </p>                <p>
                   <a href="#!" className="text-reset">Help</a>
                 </p>
               </div>
@@ -91,7 +80,7 @@ export default function Footer() {
         </section>
 
         <div className="text-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.025)' }}>
-          © 2021 Copyright:
+          © 2021 
           <a className="text-reset fw-bold" href=""> EcoVoyage</a>
         </div>
       </footer>
