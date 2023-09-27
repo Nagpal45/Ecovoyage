@@ -1,7 +1,7 @@
 import React from 'react'
 import Destination from '../../components/destinationInput/destination'
 import Discover from '../../components/discover/discover'
-import About from '../../components/aboutUs/about'
+import Testimonial from '../../components/Testimonials/testimonial'
 import Faq from '../../components/FAQs/faq'
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
     <div className='home' id="home">
         <Destination/>
         <Discover/>
-        <About/>
+        <Testimonial/>
         <Faq/>
     </div>
   )
