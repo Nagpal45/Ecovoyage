@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './navbar.css'
 import {Link, useNavigate} from 'react-router-dom'
-import Signin from '../signIn/signIn';
+import Signin from '../signin/signin';
 
 
 export default function Navbar() {
@@ -59,10 +59,12 @@ export default function Navbar() {
 
       const openSignInModal = () => {
         setIsSignInModalOpen(true);
+        document.body.classList.add('body-no-scroll');
       };
     
       const closeSignInModal = () => {
         setIsSignInModalOpen(false);
+        document.body.classList.remove('body-no-scroll');
       };
 
   return (

@@ -14,6 +14,10 @@
     font-weight: 700;
 }
 
+.body-no-scroll {
+    overflow: hidden;
+  }
+
 .left , .right{
     
     flex: 7;
