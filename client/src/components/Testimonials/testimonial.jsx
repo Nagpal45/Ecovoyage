@@ -26,7 +26,14 @@ const Testimonial = () => {
   }, [index]);
 
   return (
-    <section className="section">
+    <div className="section">
+    <div className="Heading">
+    <p className="Testimonial">Testimonials</p>
+    <h1>Reviewers Corner</h1>
+    <p className="para">we place huge value on strong Relationships . </p>
+    <p className="para">Customer Feedback is vital in helping us to get it right.</p>
+
+    </div>
       
       <div className="section-center">
         {people.map((item, indexPeople) => {
@@ -62,7 +69,7 @@ const Testimonial = () => {
 </svg>
         </button>
       </div>
-    </section>
+    </div>
   );
 };
 
