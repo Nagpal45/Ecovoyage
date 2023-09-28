@@ -27,11 +27,10 @@ const Testimonial = () => {
 
   return (
     <div className="section">
-    <div className="Heading">
-    <p className="Testimonial">Testimonials</p>
+    <div className="reviewHeading">
     <h1>Reviewers Corner</h1>
-    <p className="para">we place huge value on strong Relationships . </p>
-    <p className="para">Customer Feedback is vital in helping us to get it right.</p>
+    <p className="reviewPara">We place huge value on strong Relationships . </p>
+    <p className="reviewPara">Customer Feedback is vital in helping us to get it right.</p>
 
     </div>
       

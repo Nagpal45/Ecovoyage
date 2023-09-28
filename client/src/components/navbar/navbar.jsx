@@ -11,11 +11,11 @@ export default function Navbar() {
 
     const handleScroll = () => {
         const scrollY = window.scrollY;
-        if (scrollY < 800 ) {
+        if (scrollY < 700 ) {
           setActiveOption('home');
-        } else if (scrollY < 1800) {
+        } else if (scrollY < 1600) {
           setActiveOption('discover');
-        } else if (scrollY < 2550) {
+        } else if (scrollY < 2300) {
           setActiveOption('testimonials');
         } else {
           setActiveOption('faqs');
@@ -40,19 +40,19 @@ export default function Navbar() {
         if (sectionId === 'discover') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 800, behavior: 'smooth' });
+            window.scrollTo({ top: 700, behavior: 'smooth' });
           }, 0);
         } 
         if (sectionId === 'testimonials') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 1800, behavior: 'smooth' });
+            window.scrollTo({ top: 1700, behavior: 'smooth' });
           }, 0);
         } 
         if (sectionId === 'faqs') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 2550, behavior: 'smooth' });
+            window.scrollTo({ top: 2300, behavior: 'smooth' });
           }, 0);
         } 
       };
@@ -86,7 +86,7 @@ export default function Navbar() {
         </li>
 
         <li className={activeOption === 'discover' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('discover')}>Discover</li>
-        <li className={activeOption === 'testimonials' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('testimonials')}>Testimonials</li>
+        <li className={activeOption === 'testimonials' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('testimonials')}>Reviews</li>
         <li className={activeOption === 'faqs' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('faqs')}>FAQs</li>
             </ul>
         </div>
