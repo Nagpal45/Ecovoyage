@@ -52,13 +52,13 @@ export default function Signin({ onClose }) {
               <button type="submit">Sign in</button>
             </form>
             <div className="emailFooter">
-              <div class="line-container">
-                <div class="gray-line"></div>
-                <div class="centered-text">Not a member?</div>
-                <div class="gray-line"></div>
+              <div className="line-container">
+                <div className="gray-line"></div>
+                <div className="centered-text">Not a member?</div>
+                <div className="gray-line"></div>
               </div>
               <div className="joinUs">
-                <span><a href="#">Join</a> us to unlock the best of EcoVoyage</span>
+                <span><a href="#home">Join</a> us to unlock the best of EcoVoyage</span>
               </div>
             </div>
             <Close className="buttonClose" onClick={onClose} />
