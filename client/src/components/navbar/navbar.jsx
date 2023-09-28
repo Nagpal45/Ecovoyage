@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './navbar.css'
 import {Link, useNavigate} from 'react-router-dom'
-import Signin from '../signin/signin';
+import Signin from '../signin/signIn'
 
 
 export default function Navbar() {
@@ -15,7 +15,7 @@ export default function Navbar() {
           setActiveOption('home');
         } else if (scrollY < 1300) {
           setActiveOption('discover');
-        } else if (scrollY < 1900) {
+        } else if (scrollY < 2100) {
           setActiveOption('testimonials');
         } else {
           setActiveOption('faqs');
@@ -46,13 +46,13 @@ export default function Navbar() {
         if (sectionId === 'testimonials') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 1347, behavior: 'smooth' });
+            window.scrollTo({ top: 1500, behavior: 'smooth' });
           }, 0);
         } 
         if (sectionId === 'faqs') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 2080, behavior: 'smooth' });
+            window.scrollTo({ top: 2200, behavior: 'smooth' });
           }, 0);
         } 
       };

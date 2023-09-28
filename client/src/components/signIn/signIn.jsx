@@ -6,16 +6,11 @@ export default function Signin({ onClose }) {
   const [showEmailForm, setShowEmailForm] = useState(false);
   const signInWithGoogle = async () => {
     try {
-      const width = 500;
-      const height = 500;
-      const left = window.innerWidth / 2 - width / 2 + window.screenX;
-      const top = window.innerHeight / 2 - height / 2 + window.screenY;
-
-      const windowFeatures = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,status=yes`;
+      
       window.open(
         "http://localhost:5000/auth/google",
-        "_blank",
-        windowFeatures
+        "_self",
+        
       );
     } catch (error) {
       console.error(error);
@@ -52,13 +47,13 @@ export default function Signin({ onClose }) {
               <button type="submit">Sign in</button>
             </form>
             <div className="emailFooter">
-              <div class="line-container">
-                <div class="gray-line"></div>
-                <div class="centered-text">Not a member?</div>
-                <div class="gray-line"></div>
+              <div className="line-container">
+                <div className="gray-line"></div>
+                <div className="centered-text">Not a member?</div>
+                <div className="gray-line"></div>
               </div>
               <div className="joinUs">
-                <span><a href="#">Join</a> us to unlock the best of EcoVoyage</span>
+                <span><a href="#home">Join</a> us to unlock the best of EcoVoyage</span>
               </div>
             </div>
             <Close className="buttonClose" onClick={onClose} />
