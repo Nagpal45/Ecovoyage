@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './navbar.css'
 import {Link, useNavigate} from 'react-router-dom'
-import Signin from '../signin/signIn'
+import Signin from '../signIn/signIn'
 
 
 export default function Navbar() {
