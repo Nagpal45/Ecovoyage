@@ -11,11 +11,11 @@ export default function Navbar() {
 
     const handleScroll = () => {
         const scrollY = window.scrollY;
-        if (scrollY < 600 ) {
+        if (scrollY < 800 ) {
           setActiveOption('home');
-        } else if (scrollY < 1300) {
+        } else if (scrollY < 1800) {
           setActiveOption('discover');
-        } else if (scrollY < 2100) {
+        } else if (scrollY < 2550) {
           setActiveOption('testimonials');
         } else {
           setActiveOption('faqs');
@@ -40,19 +40,19 @@ export default function Navbar() {
         if (sectionId === 'discover') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 670, behavior: 'smooth' });
+            window.scrollTo({ top: 800, behavior: 'smooth' });
           }, 0);
         } 
         if (sectionId === 'testimonials') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 1500, behavior: 'smooth' });
+            window.scrollTo({ top: 1800, behavior: 'smooth' });
           }, 0);
         } 
         if (sectionId === 'faqs') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 2200, behavior: 'smooth' });
+            window.scrollTo({ top: 2550, behavior: 'smooth' });
           }, 0);
         } 
       };
