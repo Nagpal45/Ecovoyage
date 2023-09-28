@@ -70,11 +70,11 @@ const Discover = () => {
 
   return (
     <div className="discover-page">
-      <p className='heading'>Discover Sustainable Destinations</p>
       <div className ="SubPara">
-      <p className='para2'>Travel with a Purpose. Experience Responsible Tourism.</p>
-      <div className="hotel-list">
+      <span className='discoverHead'>Discover Sustainable Destinations</span>
+      <span className='para2'>Travel with a Purpose. Experience Responsible Tourism.</span>
       </div>
+      <div className="hotel-list">
         {hotels.map((hotel, index) => (
           <Hotel
             key={index}
