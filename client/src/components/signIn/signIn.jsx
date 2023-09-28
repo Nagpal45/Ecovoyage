@@ -6,16 +6,11 @@ export default function Signin({ onClose }) {
   const [showEmailForm, setShowEmailForm] = useState(false);
   const signInWithGoogle = async () => {
     try {
-      const width = 500;
-      const height = 500;
-      const left = window.innerWidth / 2 - width / 2 + window.screenX;
-      const top = window.innerHeight / 2 - height / 2 + window.screenY;
-
-      const windowFeatures = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,status=yes`;
+      
       window.open(
         "http://localhost:5000/auth/google",
-        "_blank",
-        windowFeatures
+        "_self",
+        
       );
     } catch (error) {
       console.error(error);
