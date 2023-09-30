@@ -52,7 +52,7 @@ export default function Navbar() {
         if (sectionId === 'faqs') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 2300, behavior: 'smooth' });
+            window.scrollTo({ top: 2400, behavior: 'smooth' });
           }, 0);
         } 
       };
@@ -68,7 +68,7 @@ export default function Navbar() {
       };
 
   return (
-    <div className='navbar'>
+    <div className='navbarWrapper'>
         <div className='left'>
           <Link to='/'>
             <div className='logo'>
@@ -79,7 +79,7 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="center">
-            <ul className='list'>
+            <ul className='centerList'>
             
         <li className={activeOption === 'home' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('home')}>
           Home

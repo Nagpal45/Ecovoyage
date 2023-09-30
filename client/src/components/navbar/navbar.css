@@ -1,4 +1,4 @@
-.navbar{
+.navbarWrapper{
     background-color: white;
     color: black;
     width: 100%;
@@ -26,7 +26,7 @@
     justify-content: center;
 }
 
-.list{
+.centerList{
     display: flex;
     justify-content: center;
     margin: 0;padding: 0;

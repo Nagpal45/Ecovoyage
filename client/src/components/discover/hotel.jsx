@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const Hotel = ({ name, distance, cost, image }) => {
   return (
     <div className="hotel">

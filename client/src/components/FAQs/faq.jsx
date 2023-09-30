@@ -20,7 +20,7 @@ const [active, setActive] = useState(null)
      
 
       {question.map((item, i) => (
-        <div className='item' key={i}>
+        <div className='faqItem' key={i}>
           <div className='title' onClick={()=> toggle(i)}>
             <h2>{item.question}</h2>
            <span className='plus'>{active === i ? '-' : '+' }</span>
