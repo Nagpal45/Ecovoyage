@@ -52,7 +52,7 @@ export default function Navbar() {
         if (sectionId === 'faqs') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 2600, behavior: 'smooth' });
+            window.scrollTo({ top: 2550, behavior: 'smooth' });
           }, 0);
         } 
       };
