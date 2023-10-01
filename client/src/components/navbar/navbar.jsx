@@ -46,13 +46,13 @@ export default function Navbar() {
         if (sectionId === 'testimonials') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 1700, behavior: 'smooth' });
+            window.scrollTo({ top: 1850, behavior: 'smooth' });
           }, 0);
         } 
         if (sectionId === 'faqs') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 2400, behavior: 'smooth' });
+            window.scrollTo({ top: 2600, behavior: 'smooth' });
           }, 0);
         } 
       };
