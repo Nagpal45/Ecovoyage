@@ -55,21 +55,40 @@ router.post('/login', async (req, res) => {
 });
 
 router.get("/google", passport.authenticate("google", {
-    scope: ["profile", "email"]
+    scope: ["profile", "email"],
 }));
 
 router.get("/google/callback", passport.authenticate("google", {
-    failureRedirect: "/",
-    session: false
-}), (req, res) => {
-    const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET);
-    res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "none" });
-    res.redirect("http://localhost:3000");
+    successRedirect: "http://localhost:3000/",
+    failureRedirect: "/login/failed",
+}));
+
+router.get("/login/success", (req, res) => {
+    if (req.user) {
+        res.status(200).json({
+            success: true,
+            message: "User has successfully authenticated.",
+            user: req.user,
+            cookies: req.cookies
+        });
+    }
 });
 
-router.get("/logout", (req, res) => {
-    res.clearCookie("jwt");
-    res.redirect("http://localhost:3000");
+router.get("/login/failed", (req, res) => {
+    res.status(401).json({
+        success: false,
+        message: "User failed to authenticate."
+    });
+}
+);
+
+
+
+router.get("/logout", (req, res, next) => {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('http://localhost:3000/');
+    });
 });
 
 

@@ -6,12 +6,19 @@ import { AuthContext } from '../../context/authContext';
 
 
 
-export default function Navbar() {
+export default function Navbar({Newuser}) {
     const [activeOption, setActiveOption] = useState('');
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
     const navigate = useNavigate();
     const {user} = useContext(AuthContext);
     const { dispatch } = useContext(AuthContext);
+
+    const logout = () => {
+      window.open(
+        "http://localhost:5000/auth/logout",
+        "_self");
+    }
+    
 
     const handleScroll = () => {
         const scrollY = window.scrollY;
@@ -102,7 +109,9 @@ export default function Navbar() {
             </ul>
         </div>
         <div className="right">
-          {user ? (
+          {Newuser ? (
+            <button className='signin' onClick={logout}>Logout</button>
+          ) : user ? (
             <button className='signin' onClick={handeLogout}>Logout</button>
           ) : (
             <button className='signin' onClick={openSignInModal}>Sign in</button>
