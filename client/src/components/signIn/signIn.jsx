@@ -1,25 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./signIn.css";
 import { Close, MailOutline } from "@material-ui/icons";
 import axios from "axios";
 import SignupForm from "./signupForm";
 import SigninForm from "./signinForm";
+import { AuthContext } from "../../context/authContext";
+import { useContext } from "react";
+
 
 export default function Signin({ onClose }) {
+  const { dispatch } = useContext(AuthContext);
+
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+
   const signInWithGoogle = async () => {
-    try {
-      
+    try {      
       window.open(
         "http://localhost:5000/auth/google",
-        "_self",
-        
-      );
+        "_self");
+     
     } catch (error) {
       console.error(error);
     }
-  };
+  }
+
   const signInWithEmail = () => {
     setShowEmailForm(true);
   };
@@ -47,13 +52,16 @@ export default function Signin({ onClose }) {
       password,
     });
     const token = response.data.token;
-    
-    // Save the token to localStorage or a secure storage method.
-    // You can use localStorage.setItem("token", token);
+    const user = response.data.user;
+
+    dispatch({ type: "LOGIN_SUCCESS", payload: {user, token} });
+
 
     onClose(); 
   } catch (error) {
     console.error(error);
+
+    dispatch({ type: "LOGIN_FAILURE", payload: error });
     
   }
   };
@@ -71,9 +79,6 @@ export default function Signin({ onClose }) {
       password,
     });
     const token = response.data.token;
-
-    // Save the token to localStorage or a secure storage method.
-    // You can use localStorage.setItem("token", token);
 
     onClose(); 
   } catch (error) {

@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './navbar.css'
 import {Link, useNavigate} from 'react-router-dom'
 import Signin from '../signIn/signIn'
+import { AuthContext } from '../../context/authContext';
+
 
 
 export default function Navbar() {
     const [activeOption, setActiveOption] = useState('');
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
     const navigate = useNavigate();
+    const {user} = useContext(AuthContext);
+    const { dispatch } = useContext(AuthContext);
 
     const handleScroll = () => {
         const scrollY = window.scrollY;
@@ -67,6 +71,13 @@ export default function Navbar() {
         document.body.classList.remove('body-no-scroll');
       };
 
+      const handeLogout = () => {
+        dispatch({ type: "LOGOUT" });
+        navigate("/");
+      }
+
+
+      
   return (
     <div className='navbarWrapper'>
         <div className='left'>
@@ -91,7 +102,11 @@ export default function Navbar() {
             </ul>
         </div>
         <div className="right">
+          {user ? (
+            <button className='signin' onClick={handeLogout}>Logout</button>
+          ) : (
             <button className='signin' onClick={openSignInModal}>Sign in</button>
+          )}
         </div>
         {isSignInModalOpen && <Signin onClose={closeSignInModal} />}
     </div>
