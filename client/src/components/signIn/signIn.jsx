@@ -8,11 +8,16 @@ import { AuthContext } from "../../context/authContext";
 import { useContext } from "react";
 
 
+
 export default function Signin({ onClose }) {
   const { dispatch } = useContext(AuthContext);
 
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [wrongPassword, setWrongPassword] = useState(false);
+  const[signupFailed, setSignupFailed] = useState(false);
+  const[signupSuccess, setSignupSuccess] = useState(false);
 
   const signInWithGoogle = async () => {
     try {      
@@ -27,18 +32,26 @@ export default function Signin({ onClose }) {
 
   const signInWithEmail = () => {
     setShowEmailForm(true);
+    setSignupFailed(false);
   };
 
   const signUpWithEmail = () => {
     setShowRegistrationForm(true);
+    setLoginFailed(false);
+    setWrongPassword(false);
+    setSignupSuccess(false);
   };
 
   const goBack = () => {
     setShowRegistrationForm(false);
+    setSignupFailed(false);
   }
 
   const SignIngoBack = () => {
     setShowEmailForm(false);
+    setLoginFailed(false);
+    setWrongPassword(false);
+    setSignupSuccess(false);
   };
 
   const handlesigninFormSubmit = async (e) => {
@@ -47,6 +60,9 @@ export default function Signin({ onClose }) {
   const password = e.target.signinpassword.value;
 
   try {
+    setLoginFailed(false);
+    setWrongPassword(false);
+    setSignupSuccess(false);
     const response = await axios.post("/auth/login", {
       email, 
       password,
@@ -60,6 +76,15 @@ export default function Signin({ onClose }) {
     onClose(); 
   } catch (error) {
     console.error(error);
+
+    if(error.response.status === 400) {
+      setLoginFailed(true);
+    }
+
+    else if(error.response.status === 403) {
+      setWrongPassword(true);
+    }
+
 
     dispatch({ type: "LOGIN_FAILURE", payload: error });
     
@@ -78,18 +103,24 @@ export default function Signin({ onClose }) {
       email,
       password,
     });
-    
 
-    onClose(); 
+    setSignupSuccess(true);
+    goBack();
   } catch (error) {
     console.error(error);
+
+    if(error.response.status === 400) {
+      setSignupFailed(true);
+    }
   }
   };
 
   return (
     <div className="signinWrapper">
       {showRegistrationForm ? (
-          <SignupForm goBack={goBack} onClose={onClose} handlesignupFormSubmit={handlesignupFormSubmit} />
+          <SignupForm goBack={goBack} onClose={onClose} handlesignupFormSubmit={handlesignupFormSubmit} 
+          signupFailed={signupFailed}
+          />
         ):
         showEmailForm ? (
             <SigninForm 
@@ -97,6 +128,9 @@ export default function Signin({ onClose }) {
             SignIngoBack={SignIngoBack}
             handlesigninFormSubmit={handlesigninFormSubmit}
             signUpWithEmail={signUpWithEmail}
+            loginFailed={loginFailed}
+            wrongPassword={wrongPassword}
+            signupSuccess={signupSuccess}
             />
       )  : (
         <>

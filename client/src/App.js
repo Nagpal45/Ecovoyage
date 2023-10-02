@@ -6,9 +6,6 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Plan from './pages/travelPlan/plan';
 import { AuthContext } from './context/authContext';
-import Signin from './components/signIn/signIn';
-
-
 
 function App() {
   const [newUser, setnewUser] = React.useState(null);

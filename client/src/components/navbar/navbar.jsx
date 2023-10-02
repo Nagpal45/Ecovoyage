@@ -13,15 +13,17 @@ export default function Navbar({ newUser }) {
   const { dispatch } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleClickOutside = (event) => {
-    setTimeout(() => {
-      if (showDropdown && !event.target.classList.contains("dropdownItem")) {
-        setShowDropdown(false);
-      }
-    }, 100);
-  };
-
   useEffect(() => {
+
+    const handleClickOutside = (event) => {
+      setTimeout(() => {
+        if (showDropdown && !event.target.classList.contains("dropdownItem")) {
+          setShowDropdown(false);
+        }
+      }, 100);
+    };
+
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -175,7 +177,7 @@ export default function Navbar({ newUser }) {
               alt=""
               className="profileImg"
             />
-            <span className="profileName">{newUser.username}</span>
+            <span className="profileName">{newUser.username.split(' ')[0]}</span>
           </div>
         ) : user ? (
           <div className="profileIcon" onClick={handleDropdown}>
@@ -184,7 +186,7 @@ export default function Navbar({ newUser }) {
               alt=""
               className="profileImg"
             />
-            <span className="profileName">{user.username}</span>
+            <span className="profileName">{user.username.split(' ')[0]}</span>
           </div>
         ) : (
           <button className="signin" onClick={openSignInModal}>

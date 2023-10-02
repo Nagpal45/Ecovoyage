@@ -8,7 +8,7 @@ const passport = require('passport');
 router.post('/register', async (req, res) => {
     const {username, email, password} = req.body;
     try {
-        let user = await User.findOne({username});
+        let user = await User.findOne({email});
         if (user) {
             return res.status(400).json('User already exists');
         }
@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
 
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) {
-            return res.status(400).json('Invalid password');
+            return res.status(403).json('Invalid password');
         }
 
         const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET);

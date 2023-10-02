@@ -1,7 +1,7 @@
 import { ArrowBack, Close } from '@material-ui/icons'
 import React from 'react'
 
-export default function SignupForm({ onClose, goBack, handlesignupFormSubmit}) {
+export default function SignupForm({ onClose, goBack, handlesignupFormSubmit, signupFailed}) {
   return (
     <div className="emailFormWrapper">
             <ArrowBack className="buttonBack" onClick={goBack} />
@@ -9,6 +9,11 @@ export default function SignupForm({ onClose, goBack, handlesignupFormSubmit}) {
               <img className="signinLogo" src="/images/logo.png" alt="" />
               <h2>Welcome back.</h2>
             </div>
+            {signupFailed && (
+              <div className="signupFailedMessage">
+                You are already registered. Please sign in.
+              </div>
+            )}
             <form className="emailForm" onSubmit={handlesignupFormSubmit}>
               <label htmlFor="signupname">Name</label>
               <input type="text" placeholder="abc" required id="signupname" name="signupname"/>
