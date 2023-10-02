@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/authContext';
 
 
 
-export default function Navbar({Newuser}) {
+export default function Navbar({newUser}) {
     const [activeOption, setActiveOption] = useState('');
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
     const navigate = useNavigate();
@@ -109,7 +109,7 @@ export default function Navbar({Newuser}) {
             </ul>
         </div>
         <div className="right">
-          {Newuser ? (
+          {newUser ? (
             <button className='signin' onClick={logout}>Logout</button>
           ) : user ? (
             <button className='signin' onClick={handeLogout}>Logout</button>

@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Navbar from './components/navbar/navbar';
 import Home from './pages/home/home';
 import Footer from './components/footer/footer';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Plan from './pages/travelPlan/plan';
+import { AuthContext } from './context/authContext';
+import Signin from './components/signIn/signIn';
 
 
 
 function App() {
-  const [user, setUser] = React.useState(null);
+  const [newUser, setnewUser] = React.useState(null);
+  const {user} = useContext(AuthContext)
+
 
   useEffect(() => {
       const getUser = () => {
@@ -27,11 +31,8 @@ function App() {
             throw new Error("authentication has been failed!");
           })
           .then((resObject) => {
-            setUser(resObject.user);
+            setnewUser(resObject.user);
           })
-          .catch((err) => {
-            console.log(err);
-          });
       };
       getUser();
     }, []);
@@ -39,14 +40,14 @@ function App() {
   return (
     <div className="App">
       <Router>
-      <Navbar Newuser={user}/>
+      <Navbar newUser={newUser}/>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/plan" element={<Plan />} />
+          <Route path="/plan" element={user || newUser ? <Plan /> : <Home />} />
+          <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
-
-      </Router> 
       <Footer/>
+      </Router> 
     </div>
   );
 }
