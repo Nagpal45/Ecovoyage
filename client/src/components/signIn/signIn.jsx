@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import "./signIn.css";
 import { Close, MailOutline } from "@material-ui/icons";
 import axios from "axios";
@@ -73,12 +73,12 @@ export default function Signin({ onClose }) {
   const password = e.target.signuppassword.value;
 
   try {
-    const response = await axios.post("/auth/register", {
+    await axios.post("/auth/register", {
       username: name, 
       email,
       password,
     });
-    const token = response.data.token;
+    
 
     onClose(); 
   } catch (error) {
