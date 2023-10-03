@@ -6,6 +6,7 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Plan from './pages/travelPlan/plan';
 import { AuthContext } from './context/authContext';
+import NotFound from './components/notFound/notFound';
 
 function App() {
   const [newUser, setnewUser] = React.useState(null);
@@ -41,7 +42,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={user || newUser ? <Plan /> : <Home />} />
-          <Route path="*" element={<h1>Not Found</h1>} />
+          <Route path="*" element={<NotFound/>} />
         </Routes>
       <Footer/>
       </Router> 
