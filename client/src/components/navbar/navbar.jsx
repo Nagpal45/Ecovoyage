@@ -6,7 +6,7 @@ import { AuthContext } from "../../context/authContext";
 
 
 export default function Navbar({ newUser }) {
-  const [activeOption, setActiveOption] = useState("");
+  const [activeOption, setActiveOption] = useState("home");
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
@@ -20,7 +20,7 @@ export default function Navbar({ newUser }) {
         if (showDropdown && !event.target.classList.contains("dropdownItem")) {
           setShowDropdown(false);
         }
-      }, 100);
+      }, 300);
     };
 
 
@@ -37,7 +37,7 @@ export default function Navbar({ newUser }) {
 
   const handleScroll = () => {
     const scrollY = window.scrollY;
-    if (scrollY < 700) {
+    if (scrollY  < 700) {
       setActiveOption("home");
     } else if (scrollY < 1600) {
       setActiveOption("discover");
@@ -79,6 +79,17 @@ export default function Navbar({ newUser }) {
       setTimeout(() => {
         window.scrollTo({ top: 2550, behavior: "smooth" });
       }, 0);
+    }
+    if(sectionId === "travelPlan"){
+      if(user || newUser){
+        navigate("/plan");
+      }
+      else{
+        openSignInModal();
+      }
+      setTimeout(() => {
+        setActiveOption("travelPlan");
+      },100)
     }
   };
 
@@ -149,6 +160,12 @@ export default function Navbar({ newUser }) {
             Discover
           </li>
           <li
+            className={activeOption === "travelPlan" ? "active listItem" : "listItem"}
+            onClick={() => handleOptionClick("travelPlan")}
+          >
+            Plan Travel
+          </li>
+          <li
             className={
               activeOption === "testimonials" ? "active listItem" : "listItem"
             }
@@ -166,7 +183,7 @@ export default function Navbar({ newUser }) {
       </div>
       <div className="right">
         {newUser ? (
-          <div className="profileIcon" onClick={handleDropdown}>
+          <div className={showDropdown ? "profileIcon activeIcon" : "profileIcon"} onClick={handleDropdown}>
             
             <img
               src={
@@ -198,7 +215,7 @@ export default function Navbar({ newUser }) {
       {showDropdown && (
         <div className="dropdownMenu">
             <div onClick={handleProfileClick} className="dropdownItem">
-              <img src="/images/edit2.png" alt="" className="profileIcon" />
+              <img src="/images/edit2.png" alt="" className="profileEditIcon" />
               <span>Edit Profile</span>
             </div>
             <div onClick={handleYourTripsClick} className="dropdownItem">
