@@ -56,8 +56,9 @@
     align-items: flex-start;
     justify-content: space-between;
     width: 100%;
-
 }
+
+
 
 .profileInfoSubItemLabel{
     font-size: 1.1vw;
@@ -112,4 +113,20 @@ i{
     font-size: 0.85vw;
     font-weight: 700;
     text-decoration: underline;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.profileInfoSubItemSaveBtn{
+    margin-left: 1vw;    
+}
+
+.profileInfoSubItemEditInput{
+    width: 60%;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border-radius: 0.3vw;
+    border: 0.1vw solid rgb(174, 174, 174);
 }

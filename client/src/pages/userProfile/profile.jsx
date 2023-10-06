@@ -4,7 +4,40 @@ import { AuthContext } from "../../context/authContext";
 
 export default function Profile({ newUser }) {
   const { user } = useContext(AuthContext);
-  
+
+  const [editedUser, setEditedUser] = useState({});
+  const [editMode, setEditMode] = useState({
+    username: false,
+    email: false,
+    phone: false,
+    address: false,
+    dob: false,
+  });
+
+  const handleEdit = (e) => {
+   const {name, value} = e.target;
+   setEditedUser({...editedUser, [name]: value});
+  }
+
+  const handleSave = (e) => {
+
+   }
+
+   const toggleEdit = (fieldName) => {
+    setEditedUser({
+      ...editedUser,
+      [fieldName]: user ? user[fieldName] : newUser[fieldName] || "",
+    });
+
+    setEditMode({
+      ...editMode,
+      [fieldName]: !editMode[fieldName],
+    });
+    
+   }
+
+
+
 
   return (
     <div className="profilePage">
@@ -32,85 +65,140 @@ export default function Profile({ newUser }) {
           <div className="profileInfoItem">
             <span className="profileInfoSubItemLabel">Name</span>
             <div className="profileInfoSubItem">
-            {user ?
-              user.username?
-              user.username
-              :<i>Update your username</i>
-               : newUser.username ? (
+            {editMode.username ? (
+                <input
+                  type="text"
+                  name="username"
+                  value={editedUser.username}
+                  onChange={handleEdit}
+                  className="profileInfoSubItemEditInput"
+                />
+              ) : user ? (
+                user.username
+              ) : newUser.username ? (
                 newUser.username
               ) : (
                 <i>Update your username</i>
               )}
-              <div className="profileInfoSubItemEditBtn">
-                Edit
+              <div className="profileInfoSubItemEditBtn" onClick={() => toggleEdit("username")}>
+                {editMode.username ? "Cancel" : "Edit"}
+              {editMode.username && (
+                <div className="profileInfoSubItemSaveBtn" onClick={handleSave}>
+                  Save
+                </div>
+              )}
               </div>
             </div>
           </div>
           <div className="profileInfoItem">
             <span className="profileInfoSubItemLabel">Email</span>
             <div className="profileInfoSubItem">
-            {user ?
-              user.email?
-              user.email
-              :<i>Update your email</i>
-               : newUser.email ? (
+            {editMode.email ? (
+                <input
+                  type="text"
+                  name="email"
+                  value={editedUser.email}
+                  onChange={handleEdit}
+                  className="profileInfoSubItemEditInput"
+                />
+              ) : user ? (
+                user.email
+              ) : newUser.email ? (
                 newUser.email
               ) : (
                 <i>Update your email</i>
               )}
-              <div className="profileInfoSubItemEditBtn">
-                Edit
+              <div className="profileInfoSubItemEditBtn" onClick={() => toggleEdit("email")}>
+                {editMode.email ? "Cancel" : "Edit"}
+              {editMode.email && (
+                <div className="profileInfoSubItemSaveBtn" onClick={handleSave}>
+                  Save
+                </div>
+              )}
               </div>
             </div>
           </div>
           <div className="profileInfoItem">
             <span className="profileInfoSubItemLabel">Phone</span>
             <div className="profileInfoSubItem">
-            {user ?
-              user.phone?
-              user.phone
-              :<i>Update your phone no.</i>
-               : newUser.phone ? (
+            {editMode.phone ? (
+                <input
+                  type="text"
+                  name="phone"
+                  value={editedUser.phone}
+                  onChange={handleEdit}
+                  className="profileInfoSubItemEditInput"
+                />
+              ) : user ? (
+                user.phone
+              ) : newUser.phone ? (
                 newUser.phone
               ) : (
-                <i>Update your phone no.</i>
+                <i>Update your phone number</i>
               )}
-              <div className="profileInfoSubItemEditBtn">
-                Edit
+              <div className="profileInfoSubItemEditBtn" onClick={() => toggleEdit("phone")}>
+                {editMode.phone ? "Cancel" : "Edit"}
+              {editMode.phone && (
+                <div className="profileInfoSubItemSaveBtn" onClick={handleSave}>
+                  Save
+                </div>
+              )}
               </div>
             </div>
           </div>
           <div className="profileInfoItem">
             <span className="profileInfoSubItemLabel">Address</span>
             <div className="profileInfoSubItem">
-            {user ?
-              user.address?
-              user.address
-              :<i>Update your address</i>
-               : newUser.address ? (
+            {editMode.address ? (
+                <input
+                  type="text"
+                  name="address"
+                  value={editedUser.address}
+                  onChange={handleEdit}
+                  className="profileInfoSubItemEditInput"
+                />
+              ) : user ? (
+                user.address
+              ) : newUser.address ? (
                 newUser.address
               ) : (
                 <i>Update your address</i>
               )}
-              <div className="profileInfoSubItemEditBtn">
-                Edit
+              <div className="profileInfoSubItemEditBtn" onClick={() => toggleEdit("address")}>
+                {editMode.address ? "Cancel" : "Edit"}
+              {editMode.address && (
+                <div className="profileInfoSubItemSaveBtn" onClick={handleSave}>
+                  Save
+                </div>
+              )}
               </div>
             </div>
           </div>
           <div className="profileInfoItem">
             <span className="profileInfoSubItemLabel">D.O.B</span>
             <div className="profileInfoSubItem">
-              {user ?
-              user.dob?
-              user.dob
-              :<i>Update your date of birth</i>
-               : newUser.dob ? (
+            {editMode.dob ? (
+                <input
+                  type="text"
+                  name="dob"
+                  value={editedUser.dob}
+                  onChange={handleEdit}
+                  className="profileInfoSubItemEditInput"
+                />
+              ) : user ? (
+                user.dob
+              ) : newUser.dob ? (
                 newUser.dob.split("T")[0]
               ) : (
                 <i>Update your date of birth</i>
               )}
-              <div className="profileInfoSubItemEditBtn">
-                Edit
+              <div className="profileInfoSubItemEditBtn" onClick={() => toggleEdit("dob")}>
+                {editMode.dob ? "Cancel" : "Edit"}
+              {editMode.dob && (
+                <div className="profileInfoSubItemSaveBtn" onClick={handleSave}>
+                  Save
+                </div>
+              )}
               </div>
             </div>
           </div>
