@@ -52,6 +52,10 @@
 
 .profileInfoSubItem{
     font-size: 1vw;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
 
 }
 
@@ -100,4 +104,12 @@ padding: 0.2vw;
 i{
     font-size: 0.8vw;
     color: rgb(174, 174, 174);
+}
+
+.profileInfoSubItemEditBtn{
+    margin-right: 1vw;
+    cursor: pointer;
+    font-size: 0.85vw;
+    font-weight: 700;
+    text-decoration: underline;
 }
