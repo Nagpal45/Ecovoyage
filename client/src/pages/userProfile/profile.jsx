@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import "./profile.css";
 import { AuthContext } from "../../context/authContext";
+import axios from "axios";
 
 export default function Profile({ newUser }) {
   const { user } = useContext(AuthContext);
@@ -19,7 +20,18 @@ export default function Profile({ newUser }) {
     setEditedUser({ ...editedUser, [name]: value });
   };
 
-  const handleSave = (e) => {};
+  const handleSave = async (fieldName) => {
+    try {
+      // Make an HTTP PUT request to update the user data
+    const response = await axios.put(`/api/users/update/${newUser._id}`, {
+        ...editedUser,
+      });
+
+      // Disable edit mode after successful update
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
 
   const toggleEdit = (fieldName) => {
     setEditedUser({
