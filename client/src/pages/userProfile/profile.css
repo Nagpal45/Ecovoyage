@@ -1,9 +1,10 @@
 .profilePage{
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     font-family: quicksand;
+    height: calc(100vh - 8vw);
 }
 
 .profileWrapper{
@@ -12,24 +13,65 @@
     justify-content: center;
     flex-direction: row;
     width: 80%;
-    height: 100%;
+    height: 95%;
 }
 
 .profileLeft{
-    flex:2;
-    height: 100%;
+    flex:1;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     flex-direction: column;
+    height: 100%;
+    width: 100%;
 }
 
 .profileHeading{
-    font-size: 2vw;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 100%;
+    font-size: 2.5vw;
     font-weight: bold;
-    margin: 2vw;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #353535;
+    flex: 1;
+}
 
+.profilePageImg{
+    border-radius: 50%;
+    width: 18vw;
+    height: 18vw;
+     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+     border: 0.2vw solid black;
+}
+
+.profileImgContainer{
+    flex: 6;
+    display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+    position: relative;
+}
+
+.editIcon{
+    position: absolute;
+padding: 0.2vw;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;justify-content: center;
+    font-size: 0.8vw;
+    border-radius: 0.3vw;
+    top:21vw;
+    left:6vw;
+}
+
+.editIcon > img{
+    width: 1.7vw;
+    height: 1.7vw;
 }
 
 .profileInfoItem{
@@ -45,13 +87,17 @@
 }
 
 .profileRight{
-    flex:1;
+    flex:1.8;
+    display: flex;
+    align-items: center;
+   justify-content: flex-end;
+    flex-direction: column;
     height: 100%;
-    background-color: lightcoral;
+    width: 100%;
 }
 
 .profileInfoSubItem{
-    font-size: 1vw;
+    font-size: 1.1vw;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -61,56 +107,22 @@
 
 
 .profileInfoSubItemLabel{
-    font-size: 1.1vw;
+    font-size: 1.2vw;
     font-weight: 600;
     margin-bottom: 0.4vw;
 }
 
-.profilePageImg{
-    border-radius: 50%;
-    width: 12.5vw;
-    height: 12.5vw;
-     box-shadow: 0 0 10px rgba(0,0,0,0.5);
-     border: 0.2vw solid black;
-}
 
-.profileImgContainer{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 3vw;
-    position: relative;
-}
-
-.editIcon{
-    position: absolute;
-padding: 0.2vw;
-    cursor: pointer;
-    background-color: black;
-    color: white;
-    display: flex;
-    align-items: center;justify-content: center;
-    font-size: 0.8vw;
-    border-radius: 0.3vw;
-    top:10.2vw;
-    left:21.5vw;
-}
-
-.editIcon > img{
-    width: 1.5vw;
-    height: 1.5vw;
-}
 
 i{
-    font-size: 0.8vw;
+    font-size: 0.9vw;
     color: rgb(174, 174, 174);
 }
 
 .profileInfoSubItemEditBtn{
     margin-right: 1vw;
     cursor: pointer;
-    font-size: 0.85vw;
+    font-size: 0.9vw;
     font-weight: 700;
     text-decoration: underline;
     display: flex;

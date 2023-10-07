@@ -6,7 +6,7 @@ import { AuthContext } from "../../context/authContext";
 
 
 export default function Navbar({ newUser }) {
-  const [activeOption, setActiveOption] = useState("home");
+  const [activeOption, setActiveOption] = useState("");
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);

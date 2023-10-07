@@ -41,8 +41,8 @@
 
     flex: 6;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .signin{
