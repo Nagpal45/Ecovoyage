@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./profile.css";
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
 
-export default function Profile({ newUser }) {
-  const { user } = useContext(AuthContext);
+export default function Profile() {
+  const { user,setUser } = useContext(AuthContext);
 
   const [editedUser, setEditedUser] = useState({});
   const [editMode, setEditMode] = useState({
@@ -15,6 +15,13 @@ export default function Profile({ newUser }) {
     dob: false,
   });
 
+  useEffect(() => {
+    if (user) {
+      // Initialize editedUser with the user data if user exists
+      setEditedUser(user);
+    }
+  }, [user]);
+
   const handleEdit = (e) => {
     const { name, value } = e.target;
     setEditedUser({ ...editedUser, [name]: value });
@@ -23,11 +30,14 @@ export default function Profile({ newUser }) {
   const handleSave = async (fieldName) => {
     try {
       // Make an HTTP PUT request to update the user data
-    const response = await axios.put(`/api/users/update/${newUser._id}`, {
+    const response = await axios.put(`/api/users/update/${user._id}`, {
         ...editedUser,
       });
 
-      // Disable edit mode after successful update
+    
+      setUser(response.data);
+
+     
     } catch (error) {
       console.error('Error updating user:', error);
     }
@@ -36,7 +46,7 @@ export default function Profile({ newUser }) {
   const toggleEdit = (fieldName) => {
     setEditedUser({
       ...editedUser,
-      [fieldName]: user ? user[fieldName] : newUser[fieldName] || "",
+      [fieldName]: user ? user[fieldName] : "",
     });
 
     setEditMode({
@@ -61,8 +71,6 @@ export default function Profile({ newUser }) {
                   ? user.picture
                     ? user.picture
                     : "/images/dummyProfilePic.png"
-                  : newUser.picture
-                  ? newUser.picture
                   : "/images/dummyProfilePic.png"
               }
               alt=""
@@ -82,9 +90,9 @@ export default function Profile({ newUser }) {
                   className="profileInfoSubItemEditInput"
                 />
               ) : user ? (
+                user.username?
                 user.username
-              ) : newUser.username ? (
-                newUser.username
+                :<i>Update your username</i>
               ) : (
                 <i>Update your username</i>
               )}
@@ -109,17 +117,19 @@ export default function Profile({ newUser }) {
             <div className="profileInfoSubItem">
               {editMode.email ? (
                 <input
-                  type="text"
+                  type="email"
                   name="email"
+                  unique = "true"
                   value={editedUser.email}
                   onChange={handleEdit}
                   className="profileInfoSubItemEditInput"
                 />
               ) : user ? (
+                user.email?
                 user.email
-              ) : newUser.email ? (
-                newUser.email
-              ) : (
+                :<i>Update your email</i>
+
+              )  : (
                 <i>Update your email</i>
               )}
               <div
@@ -143,17 +153,18 @@ export default function Profile({ newUser }) {
             <div className="profileInfoSubItem">
               {editMode.phone ? (
                 <input
-                  type="text"
+                  type="number"
+                  maxLength="10"
                   name="phone"
                   value={editedUser.phone}
                   onChange={handleEdit}
                   className="profileInfoSubItemEditInput"
                 />
               ) : user ? (
+                user.phone ?
                 user.phone
-              ) : newUser.phone ? (
-                newUser.phone
-              ) : (
+                :<i>Update your phone number</i>
+              )  : (
                 <i>Update your phone number</i>
               )}
               <div
@@ -184,10 +195,11 @@ export default function Profile({ newUser }) {
                   className="profileInfoSubItemEditInput"
                 />
               ) : user ? (
+                user.address ?
                 user.address
-              ) : newUser.address ? (
-                newUser.address
-              ) : (
+                :<i>Update your address</i>
+
+              )  : (
                 <i>Update your address</i>
               )}
               <div
@@ -211,17 +223,17 @@ export default function Profile({ newUser }) {
             <div className="profileInfoSubItem">
               {editMode.dob ? (
                 <input
-                  type="text"
+                  type="date"
                   name="dob"
                   value={editedUser.dob}
                   onChange={handleEdit}
                   className="profileInfoSubItemEditInput"
                 />
               ) : user ? (
-                user.dob
-              ) : newUser.dob ? (
-                newUser.dob.split("T")[0]
-              ) : (
+                user.dob ?
+                user.dob.split('T')[0]
+                :<i>Update your date of birth</i>
+              )  : (
                 <i>Update your date of birth</i>
               )}
               <div

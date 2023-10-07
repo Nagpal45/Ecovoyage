@@ -4,7 +4,6 @@ const User = require('../models/User');
 router.put('/update/:userId', async (req, res) => {
     const userId = req.params.userId;
     const updatedUserData = req.body;
-    console.log('updatedUserData', updatedUserData);
   
     try {
         const updatedUser = await User.findByIdAndUpdate(

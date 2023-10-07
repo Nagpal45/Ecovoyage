@@ -19,12 +19,7 @@ const AuthReducer = (state, action) => {
     case "LOGIN_SUCCESS":
         localStorage.setItem("token", action.payload.token)
       return {
-        user: {
-          username: action.payload.user.username,
-          email: action.payload.user.email,
-          picture: action.payload.user.picture,
-          address: action.payload.user.address,
-        },
+        user: action.payload.user,
         loading: false,
         error: null,
       };
@@ -41,6 +36,12 @@ const AuthReducer = (state, action) => {
         loading: false,
         error: null,
       };
+      case "SET_USER":
+        return {
+          user: action.payload,
+          loading: false,
+          error: null,
+        };
     
     default:
       return state;
@@ -62,6 +63,10 @@ export const AuthContextProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
 
+  const setUser = (user) => {
+    dispatch({ type: "SET_USER", payload: user });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -69,6 +74,7 @@ export const AuthContextProvider = ({ children }) => {
         loading: state.loading,
         error: state.error,
         dispatch,
+        setUser,
       }}
     >
       {children}

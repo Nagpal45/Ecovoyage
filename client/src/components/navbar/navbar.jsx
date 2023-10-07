@@ -5,7 +5,7 @@ import Signin from "../signIn/signIn";
 import { AuthContext } from "../../context/authContext";
 
 
-export default function Navbar({ newUser }) {
+export default function Navbar() {
   const [activeOption, setActiveOption] = useState("");
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -81,7 +81,7 @@ export default function Navbar({ newUser }) {
       }, 0);
     }
     if(sectionId === "travelPlan"){
-      if(user || newUser){
+      if(user ){
         navigate("/plan");
       }
       else{
@@ -115,19 +115,17 @@ export default function Navbar({ newUser }) {
 
   const handleProfileClick = () => {
     navigate("/profile");
+    setShowDropdown(false);
   }
 
   const handleYourTripsClick = () => {
     navigate("/yourTrips");
+    setShowDropdown(false);
   }
 
   const handleSignOutClick = () => {
-    if(user){
-      handeLogout();
-    }
-    else if(newUser){
-      logout();
-    }
+    logout();
+    handeLogout();
   }
 
 
@@ -182,22 +180,8 @@ export default function Navbar({ newUser }) {
         </ul>
       </div>
       <div className="right">
-        {newUser ? (
-          <div className={showDropdown ? "profileIcon activeIcon" : "profileIcon"} onClick={handleDropdown}>
-            
-            <img
-              src={
-                newUser.picture
-                  ? newUser.picture
-                  : "/images/dummyProfilePic.png"
-              }
-              alt=""
-              className="profileImg"
-            />
-            <span className="profileName">{newUser.username.split(' ')[0]}</span>
-          </div>
-        ) : user ? (
-          <div className="profileIcon" onClick={handleDropdown}>
+        { user ? (
+          <div className={showDropdown ?  "profileIcon activeIcon": "profileIcon"} onClick={handleDropdown}>
             <img
               src={user.picture ? user.picture : "/images/dummyProfilePic.png"}
               alt=""

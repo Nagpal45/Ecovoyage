@@ -10,8 +10,7 @@ import NotFound from './components/notFound/notFound';
 import Profile from './pages/userProfile/profile';
 
 function App() {
-  const [newUser, setnewUser] = React.useState(null);
-  const {user} = useContext(AuthContext)
+  const {user,dispatch} = useContext(AuthContext)
 
 
   useEffect(() => {
@@ -30,20 +29,23 @@ function App() {
             throw new Error("authentication has been failed!");
           })
           .then((resObject) => {
-            setnewUser(resObject.user);
+            dispatch({
+              type: "LOGIN_SUCCESS",
+              payload: { user: resObject.user, token: resObject.cookies },
+            });
           })
       };
       getUser();
-    }, []);
+    }, [ dispatch]);
 
   return (
     <div className="App">
       <Router>
-      <Navbar newUser={newUser}/>
+      <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/plan" element={user || newUser ? <Plan /> : <Home />} />
-          <Route path="/profile" element={user || newUser ? <Profile newUser={newUser}/> : <Home />} />
+          <Route path="/plan" element={user ? <Plan /> : <Home />} />
+          <Route path="/profile" element={user ? <Profile /> : <Home />} />
           <Route path="*" element={<NotFound/>} />
         </Routes>
       <Footer/>
