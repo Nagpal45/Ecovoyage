@@ -16,10 +16,7 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    if (user) {
-      // Initialize editedUser with the user data if user exists
-      setEditedUser(user);
-    }
+    setEditedUser(user);
   }, [user]);
 
   const handleEdit = (e) => {
@@ -36,7 +33,7 @@ export default function Profile() {
 
     
       setUser(response.data);
-
+      localStorage.setItem("user", JSON.stringify(response.data));
      
     } catch (error) {
       console.error('Error updating user:', error);
@@ -55,6 +52,25 @@ export default function Profile() {
     });
   };
 
+  const handlePicture = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      // Make an HTTP POST request to the server to upload the image
+    await axios.post(`/api/users/upload/${user._id}`, formData).then((res) => {
+        setEditedUser({ ...editedUser, picture: res.data.picture });
+        setUser(res.data);
+        localStorage.setItem("user", JSON.stringify(res.data));
+
+      });
+    } catch (error) {
+      console.error('Error uploading picture:', error);
+    }
+  }
+
+
   return (
     <div className="profilePage">
       <div className="profileWrapper">
@@ -64,17 +80,27 @@ export default function Profile() {
             <div className="editIcon">
               <img src="/images/pen.png" alt="" />
             </div>
-            <img
-              className="profilePageImg"
-              src={
-                user
-                  ? user.picture
-                    ? user.picture
-                    : "/images/dummyProfilePic.png"
-                  : "/images/dummyProfilePic.png"
-              }
-              alt=""
-            />
+            <label htmlFor="file" className="profileImgLabel">
+    <input
+      type="file"
+      id="file"
+      accept="image/*"
+      style={{ display: "none" }}
+      onChange={handlePicture}
+      className="profilePageImg"
+    />
+    <img
+      src={
+        user
+          ? user.picture
+            ? user.picture
+            : "/images/dummyProfilePic.png"
+          : "/images/dummyProfilePic.png"
+      }
+      alt=""
+      className="profilePageImg"
+    />
+  </label>
           </div>
         </div>
         <div className="profileRight">
