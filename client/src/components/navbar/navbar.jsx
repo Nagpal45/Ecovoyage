@@ -36,15 +36,20 @@ export default function Navbar() {
   };
 
   const handleScroll = () => {
-    const scrollY = window.scrollY;
+    if(window.location.pathname === "/"){
+      const scrollY = window.scrollY;
     if (scrollY  < 700) {
       setActiveOption("home");
     } else if (scrollY < 1600) {
       setActiveOption("discover");
     } else if (scrollY < 2300) {
       setActiveOption("testimonials");
-    } else {
+    } else if (scrollY < 3000){
       setActiveOption("faqs");
+    }
+    else{
+      setActiveOption("");
+    }
     }
   };
 
@@ -116,11 +121,13 @@ export default function Navbar() {
   const handleProfileClick = () => {
     navigate("/profile");
     setShowDropdown(false);
+    setActiveOption("");
   }
 
   const handleYourTripsClick = () => {
     navigate("/yourTrips");
     setShowDropdown(false);
+    setActiveOption("");
   }
 
   const handleSignOutClick = () => {
