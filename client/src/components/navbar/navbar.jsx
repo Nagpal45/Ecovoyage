@@ -191,6 +191,11 @@ export default function Navbar() {
           <div className={showDropdown ?  "profileIcon activeIcon": "profileIcon"} onClick={handleDropdown}>
             <img
               src={user.picture ? user.picture : "/images/dummyProfilePic.png"}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/images/dummyProfilePic.png";
+              }
+              }
               alt=""
               className="profileImg"
             />
