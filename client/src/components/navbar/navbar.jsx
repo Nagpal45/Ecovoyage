@@ -64,7 +64,7 @@ export default function Navbar() {
     if (sectionId === "home") {
       navigate("/");
       setTimeout(() => {
-        window.scrollTo({ top: 1, behavior: "smooth" });
+        window.scrollTo({ top: 2, behavior: "smooth" });
       }, 0);
     }
     if (sectionId === "discover") {

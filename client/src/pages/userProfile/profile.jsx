@@ -77,10 +77,10 @@ export default function Profile() {
         <div className="profileLeft">
           <div className="profileHeading">Personal Info</div>
           <div className="profileImgContainer">
+            <label htmlFor="file" className="profileImgLabel">
             <div className="editIcon">
               <img src="/images/pen.png" alt="" />
             </div>
-            <label htmlFor="file" className="profileImgLabel">
     <input
       type="file"
       id="file"
