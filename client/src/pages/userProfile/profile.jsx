@@ -99,6 +99,11 @@ export default function Profile() {
       }
       alt=""
       className="profilePageImg"
+      onError={(e) => {
+        e.target.onerror = null;
+        e.target.src = "/images/dummyProfilePic.png";
+      }
+      }
     />
   </label>
           </div>

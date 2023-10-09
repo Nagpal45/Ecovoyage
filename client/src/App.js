@@ -14,6 +14,7 @@ function App() {
 
 
   useEffect(() => {
+    if(!user){
       const getUser = () => {
         fetch("http://localhost:5000/auth/login/success", {
           method: "GET",
@@ -36,8 +37,8 @@ function App() {
           })
       };
       getUser();
-    }, [ dispatch]);
-
+    }
+    }, [ dispatch, user]);
   return (
     <div className="App">
       <Router>
