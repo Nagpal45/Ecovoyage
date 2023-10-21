@@ -8,7 +8,7 @@ const passport = require('passport');
 router.post('/register', async (req, res) => {
     const {username, email, password} = req.body;
     try {
-        let user = await User.findOne({username});
+        let user = await User.findOne({email});
         if (user) {
             return res.status(400).json('User already exists');
         }
@@ -34,20 +34,20 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    const {username, password} = req.body;
+    const {email, password} = req.body;
     try {
-        let user = await User.findOne({username});
+        let user = await User.findOne({email});
         if (!user) {
             return res.status(400).json('User does not exist');
         }
 
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) {
-            return res.status(400).json('Invalid password');
+            return res.status(403).json('Invalid password');
         }
 
         const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET);
-        res.status(200).json({token});
+        res.status(200).json({token,user});
 
     } catch (err) {
         res.status(500).json(err);
@@ -55,21 +55,40 @@ router.post('/login', async (req, res) => {
 });
 
 router.get("/google", passport.authenticate("google", {
-    scope: ["profile", "email"]
+    scope: ["profile", "email"],
 }));
 
 router.get("/google/callback", passport.authenticate("google", {
-    failureRedirect: "/",
-    session: false
-}), (req, res) => {
-    const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET);
-    res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "none" });
-    res.redirect("http://localhost:3000");
+    successRedirect: "http://localhost:3000/",
+    failureRedirect: "/login/failed",
+}));
+
+router.get("/login/success", (req, res) => {
+    if (req.user) {
+        res.status(200).json({
+            success: true,
+            message: "User has successfully authenticated.",
+            user: req.user,
+            cookies: req.cookies
+        });
+    }
 });
 
-router.get("/logout", (req, res) => {
-    res.clearCookie("jwt");
-    res.redirect("http://localhost:3000");
+router.get("/login/failed", (req, res) => {
+    res.status(401).json({
+        success: false,
+        message: "User failed to authenticate."
+    });
+}
+);
+
+
+
+router.get("/logout", (req, res, next) => {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('http://localhost:3000/');
+    });
 });
 
 

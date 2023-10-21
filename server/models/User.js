@@ -19,8 +19,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    age:{
-        type: Number,
+    dob:{
+        type: Date,
         default: 0,
     },
     phone:{

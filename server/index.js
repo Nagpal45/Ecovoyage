@@ -3,6 +3,7 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 require('./passport');
 require('./db');
 
@@ -14,8 +15,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60
-    },
+        maxAge: 24 * 60 * 60 *1000
+    }
+
 })
 );
 
@@ -30,6 +32,7 @@ app.use(cors({
 
 
 app.use('/auth', authRoutes);
+app.use('/api/users', userRoutes)
 
 app.listen(5000, () => console.log('Server is running on port 5000'));
 

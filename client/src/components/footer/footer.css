@@ -1,11 +1,11 @@
 /* Footer CSS */
 
 .footer {
-    background-color: #34e0a1;
-    color: #F6F4EB;
-    padding: 20px ;
-    margin-top: 10px;
-    font-size: 20px;
+    background-color: #F6F4EB;
+    color: black;
+    padding: 1.5vw ;
+    margin-top: 3vw;
+    font-size: 1.5vw;
     font-family: 'Quicksand', sans-serif;
     font-weight: 700
     
@@ -15,7 +15,7 @@
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 1.5vw;
   }
   
   .footer-content {
@@ -28,18 +28,18 @@
   
   .footer-links ul {
     list-style: none;
-    padding: 10px;
+    padding: 0.7vw;
     margin: 0;
-    font-size: 15px;
+    font-size: 1vw;
   }
   
   .footer-links li {
-    margin: 5px 0;
+    margin: 0.4vw 0;
   }
   
   .footer-links a {
     text-decoration: none;
-    color: #F6F4EB;
+    color: black;
     font-weight: bold;
   }
   
@@ -48,20 +48,18 @@
   }
   
   .footer-social a {
-    color: #F6F4EB;
-    font-size: 20px;
-    margin-right: 10px;
+    color: black;
+    font-size: 1.5vw;
+    margin-right: 1vw;
     text-decoration: none;
   }
 
   .footer-para{
-    font-size: 17px;
+    font-size: 1.1vw;
     font-family: 'Quicksand', sans-serif;
     font-weight: 700
 }
   .social{
-    padding-bottom: 15px;
+    padding-bottom: 1vw;
   }
-  
-  /* Add more styles and media queries for responsiveness as needed */
   

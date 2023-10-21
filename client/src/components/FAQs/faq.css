@@ -1,6 +1,6 @@
 .faq {
+  margin-top: 0;
     width: 100%;
-    height: calc(100vh - 4.5vw);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +18,7 @@
     margin-top: 2vw;
   }
   
-  .item {
+  .faqItem {
     background-color: #1fc98b;
     margin: 0.7vw;
     padding: 0.4vw 1vw;
