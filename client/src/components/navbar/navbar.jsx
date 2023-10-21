@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import './navbar.css'
 import {Link, useNavigate} from 'react-router-dom'
+import Signin from '../signIn/signIn'
+
 
 export default function Navbar() {
     const [activeOption, setActiveOption] = useState('');
+    const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleScroll = () => {
@@ -12,8 +15,8 @@ export default function Navbar() {
           setActiveOption('home');
         } else if (scrollY < 1300) {
           setActiveOption('discover');
-        } else if (scrollY < 1900) {
-          setActiveOption('about');
+        } else if (scrollY < 2100) {
+          setActiveOption('testimonials');
         } else {
           setActiveOption('faqs');
         }
@@ -40,20 +43,29 @@ export default function Navbar() {
             window.scrollTo({ top: 670, behavior: 'smooth' });
           }, 0);
         } 
-        if (sectionId === 'about') {
+        if (sectionId === 'testimonials') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 1347, behavior: 'smooth' });
+            window.scrollTo({ top: 1500, behavior: 'smooth' });
           }, 0);
         } 
         if (sectionId === 'faqs') {
           navigate("/")
           setTimeout(() => {
-            window.scrollTo({ top: 2080, behavior: 'smooth' });
+            window.scrollTo({ top: 2200, behavior: 'smooth' });
           }, 0);
         } 
       };
 
+      const openSignInModal = () => {
+        setIsSignInModalOpen(true);
+        document.body.classList.add('body-no-scroll');
+      };
+    
+      const closeSignInModal = () => {
+        setIsSignInModalOpen(false);
+        document.body.classList.remove('body-no-scroll');
+      };
 
   return (
     <div className='navbar'>
@@ -74,13 +86,14 @@ export default function Navbar() {
         </li>
 
         <li className={activeOption === 'discover' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('discover')}>Discover</li>
-        <li className={activeOption === 'about' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('about')}>About Us</li>
+        <li className={activeOption === 'testimonials' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('testimonials')}>Testimonials</li>
         <li className={activeOption === 'faqs' ? 'active listItem' : 'listItem'} onClick={() => handleOptionClick('faqs')}>FAQs</li>
             </ul>
         </div>
         <div className="right">
-            <button className='signin'>Sign in</button>
+            <button className='signin' onClick={openSignInModal}>Sign in</button>
         </div>
+        {isSignInModalOpen && <Signin onClose={closeSignInModal} />}
     </div>
     
   )

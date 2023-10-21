@@ -22,7 +22,7 @@ export default function Destination() {
   const handleInputBlur = () => {
     setTimeout(() => {
       setInputFocus(false);
-    }, 100); 
+    }, 300); 
   };
   useEffect(() => {
     const initialRecommendations = generateRecommendations(activeOption, "");
@@ -33,7 +33,7 @@ export default function Destination() {
         if (inputRef.current && !inputRef.current.contains(event.target)) {
           setInputFocus(false);
         }
-      }, 100);
+      }, 300);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -189,7 +189,7 @@ export default function Destination() {
             />
           </div>
           {isInputFocused && recommendations.length > 0 && (
-            <ul className="recommendations">
+            <div className="recommendations">
               {recommendations.slice(0, 4).map((item, index) => (
                 <div key={index} className="recommendationItem" 
                 onClick={() => handleRecommendationClick(item)}
@@ -198,7 +198,7 @@ export default function Destination() {
                   {item}
                 </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
         <img src="/images/down.png" alt="" className="downArrow" onClick={scrollToDestination}/>

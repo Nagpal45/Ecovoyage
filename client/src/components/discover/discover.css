@@ -1,12 +1,68 @@
-.discover{
-    background-color: aqua;
-    width: 100%;
-    margin: 0;padding: 0;
-    height: calc(100vh - 4.5vw);
-    display: flex;
-    justify-content: center;
+/* Hotel.css */
+/* Hotel.css */
+.discover-page{
+    padding: 20px;
     align-items: center;
-    flex-direction: column;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 500;
+    justify-content: center;
+    margin-left: 40px;
+    margin-top: 30px;
+  
 }
+
+.hotel {
+    margin: 5px;
+    width: calc(25% - 20px); 
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    margin-top: 50px;
+  }
+  
+  .hotel:hover {
+    transform: scale(1.05); 
+  }
+  
+  .hotel-image img {
+    margin: 10px;
+    width: 400px;
+    height: 200px; /* Set the height of the image to 75% of the card height */
+    object-fit: cover; /* Crop and center the image within the container */
+    object-position: center; /* Center the image both vertically and horizontally */
+    border-radius: 5px;
+  }
+  
+  .hotel-details {
+    padding: 10px;
+    
+    font-family: 'Quicksand', sans-serif;
+
+  }
+  
+  .hotel h3 {
+    font-size: 18px;
+    margin: 0;
+    
+  }
+  
+  .hotel p {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+  
+ 
+  .heading{
+    font-size: 20px;
+    font-family: 'Quicksand', sans-serif;
+    text-align: left;
+    margin-top: 100px;
+  }
+  .SubPara{
+    text-align: left;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 24px;
+
+  }
+  
+  
