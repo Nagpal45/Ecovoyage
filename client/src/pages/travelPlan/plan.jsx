@@ -20,22 +20,27 @@ class Plan extends Component {
     };
   }
 
-  // sendCarInfotoMLmodel = async () => {
-  //   try {
-  //     const response = await axios.post('/predict', {
-  //       carMake: this.state.carMake,
-  //       carModel: this.state.carModel,
-  //       vehicleClass: this.state.vehicleClass,
-  //       transmission: this.state.transmission,
-  //       fuelType: this.state.fuelType,
-  //       arrivalCoordinates: this.state.arrivalCoordinates,
-  //       destinationCoordinates: this.state.destinationCoordinates,
-  //     });
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.error('Error sending car info to ML model:', error);
-  //   }
-  // };
+  sendCarInfotoMLmodel = async () => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/predict', {
+        carMake: this.state.carMake,
+        carModel: this.state.carModel,
+        vehicleClass: this.state.vehicleClass,
+        transmission: this.state.transmission,
+        fuelType: this.state.fuelType,
+      });
+      console.log(response);
+      const predictedCO2 = response.data.prediction;
+
+      // Update the state with the predicted value
+      this.setState({ predictedCO2 }, () => {
+        console.log('Predicted CO2 Emissions:', this.state.predictedCO2);
+      });
+    } catch (error) {
+      console.error('Error sending car info to ML model:', error);
+    }
+    
+  };
 
 
   handleInputChange = (event) => {
@@ -81,6 +86,11 @@ class Plan extends Component {
     }
   }
 
+
+  handlePlanSubmit = (event) => {
+    event.preventDefault();
+    this.sendCarInfotoMLmodel();
+  }
 
 
   render() {
@@ -202,7 +212,7 @@ class Plan extends Component {
                 </div>
               )}
             </div>
-            <button type="submit">Plan</button>
+            <button type="submit" onClick={this.handlePlanSubmit}>Plan</button>
           </form>
         </div>
       </div>
