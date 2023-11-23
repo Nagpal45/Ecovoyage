@@ -60,3 +60,27 @@
     background-color: #e5464e;
   }
   
+  .autocomplete-dropdown-container {
+    position: absolute;
+    width: 21vw;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+  
+  .autocomplete-dropdown-container div {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .autocomplete-dropdown-container div:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .form-group > input{
+    width: 95%;
+  }
