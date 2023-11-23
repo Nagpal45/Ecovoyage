@@ -15,24 +15,65 @@ class Plan extends Component {
       destination: '',
       arrivalSuggestions: [],
       destinationSuggestions: [],
+      arrivalCoordinates: null,
+      destinationCoordinates: null, 
     };
   }
 
+  // sendCarInfotoMLmodel = async () => {
+  //   try {
+  //     const response = await axios.post('/predict', {
+  //       carMake: this.state.carMake,
+  //       carModel: this.state.carModel,
+  //       vehicleClass: this.state.vehicleClass,
+  //       transmission: this.state.transmission,
+  //       fuelType: this.state.fuelType,
+  //       arrivalCoordinates: this.state.arrivalCoordinates,
+  //       destinationCoordinates: this.state.destinationCoordinates,
+  //     });
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error('Error sending car info to ML model:', error);
+  //   }
+  // };
 
- 
+
   handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
     this.handleAutocomplete(name, value);
   }
 
-  handleSelect = (value, name) => {
-    this.setState({ [name]: value, [`${name}Suggestions`]: [] });
-  }
+  handleSelect = async (value, name) => {
+    this.setState({ [name]: value, [`${name}Suggestions`]: [] }, () => {
+      this.fetchCoordinates(name);
+    });
+  };
+  
+  fetchCoordinates = async (name) => {
+    try {
+      const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${this.state[name]}&key=d4e73b5ffb22404f9fd4ac67eafae80d`);
+  
+      const coordinates = response.data.results[0].geometry;
+      const lat = coordinates.lat;
+      const lng = coordinates.lng;
+  
+      this.setState({
+        [`${name}Coordinates`]: [lat, lng]
+      }, () => {
+        console.log(this.state.arrivalCoordinates);
+        console.log(this.state.destinationCoordinates);
+      });
+    } catch (error) {
+      console.error('Error fetching coordinates:', error);
+    }
+  };
+  
 
   handleAutocomplete = async (name, query) => {
     try {
       const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${query}&key=d4e73b5ffb22404f9fd4ac67eafae80d`);
+
       const suggestions = response.data.results.map(result => result.formatted);
       this.setState({ [`${name}Suggestions`]: suggestions });
     } catch (error) {
