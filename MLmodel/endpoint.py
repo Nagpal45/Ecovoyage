@@ -5,8 +5,9 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": ["http://localhost:3000"]}})
+CORS(app, resources={r"/carData/*": {"origins": ["http://localhost:3000"]}})
 model = joblib.load('C:/Users/ASUS/Desktop/Ecovoyage/co2_emissions_model.pkl')
-# Load the training data to get the feature names used during training
+
 training_data = pd.read_csv('C:/Users/ASUS/Desktop/Ecovoyage/MLmodel/co2_emissions.csv')
 features = ['carMake', 'carModel', 'vehicleClass', 'transmission', 'fuelType']
 df_encoded = pd.get_dummies(training_data[features])
@@ -15,15 +16,31 @@ df_encoded = pd.get_dummies(training_data[features])
 def predict():
     try:
         data = request.json
-        print(data)
         car_data = pd.DataFrame([data])
 
-        # Align the columns of car_data_encoded with the columns used during training
         car_data_encoded = pd.get_dummies(car_data).reindex(columns=df_encoded.columns, fill_value=0)
-        print(car_data_encoded)
         prediction = model.predict(car_data_encoded)[0]
 
         return jsonify({'prediction': prediction})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+@app.route('/carData/<carMake>', methods=['GET'])
+def get_car_data(carMake):
+    try:
+        car_data = training_data[training_data['carMake'] == carMake]
+
+        models = car_data['carModel'].unique().tolist()
+        vehicle_classes = car_data['vehicleClass'].unique().tolist()
+        transmissions = car_data['transmission'].unique().tolist()
+        fuel_types = car_data['fuelType'].unique().tolist()
+
+        return jsonify({
+            'models': models,
+            'vehicle_classes': vehicle_classes,
+            'transmissions': transmissions,
+            'fuel_types': fuel_types
+        })
     except Exception as e:
         return jsonify({'error': str(e)})
 

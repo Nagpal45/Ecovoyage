@@ -17,6 +17,10 @@ class Plan extends Component {
       destinationSuggestions: [],
       arrivalCoordinates: null,
       destinationCoordinates: null, 
+      models: [],
+      vehicleClasses: [],
+      transmissions: [],
+      fuelTypes: [],
     };
   }
 
@@ -29,10 +33,9 @@ class Plan extends Component {
         transmission: this.state.transmission,
         fuelType: this.state.fuelType,
       });
-      console.log(response);
       const predictedCO2 = response.data.prediction;
 
-      // Update the state with the predicted value
+      
       this.setState({ predictedCO2 }, () => {
         console.log('Predicted CO2 Emissions:', this.state.predictedCO2);
       });
@@ -43,10 +46,32 @@ class Plan extends Component {
   };
 
 
-  handleInputChange = (event) => {
+  handleInputChange = async (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
-    this.handleAutocomplete(name, value);
+  
+    if (name === 'carMake') {
+      this.setState({ [name]: value, carModel: '', vehicleClass: '', transmission: '', fuelType: '' });
+  
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/carData/${value}`);
+        const models = response.data.models;
+        const vehicleClasses = response.data.vehicle_classes;
+        const transmissions = response.data.transmissions;
+        const fuelTypes = response.data.fuel_types;
+  
+        this.setState({
+          models,
+          vehicleClasses,
+          transmissions,
+          fuelTypes,
+        });
+      } catch (error) {
+        console.error('Error fetching car details:', error);
+      }
+    } else {
+      this.setState({ [name]: value });
+      this.handleAutocomplete(name, value);
+    }
   }
 
   handleSelect = async (value, name) => {
@@ -124,7 +149,7 @@ class Plan extends Component {
               >
                 <option value="">Select Car Model</option>
 
-                {['ILX', 'ILX HYBRID', 'MDX 4WD', 'Tacoma 4WD D-Cab TRD Off-Road/Pro', 'Atlas Cross Sport 4MOTION', 'XC40 T4 AWD'].map((model) => (
+                {this.state.models.map((model) => (
                   <option key={model} value={model}>{model}</option>
                 ))}
               </select>
@@ -139,7 +164,7 @@ class Plan extends Component {
               >
                 <option value="">Select Vehicle Class</option>
 
-                {['COMPACT', 'SUV - SMALL', 'MID-SIZE', 'TWO-SEATER', 'MINICOMPACT', 'SUBCOMPACT', 'FULL-SIZE', 'STATION WAGON - SMALL', 'SUV - STANDARD', 'VAN - CARGO', 'VAN - PASSENGER', 'PICKUP TRUCK - STANDARD', 'MINIVAN', 'SPECIAL PURPOSE VEHICLE', 'STATION WAGON - MID-SIZE', 'PICKUP TRUCK - SMALL'].map((vehicleClass) => (
+                {this.state.vehicleClasses.map((vehicleClass) => (
                   <option key={vehicleClass} value={vehicleClass}>{vehicleClass}</option>
                 ))}
               </select>
@@ -154,7 +179,7 @@ class Plan extends Component {
               >
                 <option value="">Select Transmission</option>
 
-                {['AS5', 'M6', 'AV7', 'AS6', 'AM6', 'A6', 'AM7', 'AV8', 'AS8', 'A7', 'A8', 'M7', 'A4', 'M5', 'AV', 'A5', 'AS7', 'A9', 'AS9', 'AV6', 'AS4', 'AM5', 'AM8', 'AM9', 'AS10', 'A10', 'AV10'].map((transmission) => (
+                {this.state.transmissions.map((transmission) => (
                   <option key={transmission} value={transmission}>{transmission}</option>
                 ))}
               </select>
@@ -169,7 +194,7 @@ class Plan extends Component {
               >
                 <option value="">Select Fuel Type</option>
 
-                {['Z', 'D', 'X', 'E', 'N'].map((fuelType) => (
+                {this.state.fuelTypes.map((fuelType) => (
                   <option key={fuelType} value={fuelType}>{fuelType}</option>
                 ))}
               </select>
