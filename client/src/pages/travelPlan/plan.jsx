@@ -92,40 +92,6 @@ class Plan extends Component {
       }
     }
 
-    else if (name === 'vehicleClass') {
-      this.setState({ [name]: value, transmission: '', fuelType: '' });
-  
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/carData/${this.state.carMake}/${this.state.carModel}/${value}`);
-        const transmissions = response.data.transmissions;
-        const fuelTypes = response.data.fuel_types;
-
-        this.setState({
-          transmissions,
-          fuelTypes,
-        });
-
-      } catch (error) {
-        console.error('Error fetching car details:', error);
-      }
-    }
-
-    else if (name === 'transmission') {
-      this.setState({ [name]: value, fuelType: '' });
-
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/carData/${this.state.carMake}/${this.state.carModel}/${this.state.vehicleClass}/${value}`);
-        const fuelTypes = response.data.fuel_types;
-
-        this.setState({
-          fuelTypes,
-        });
-
-      } catch (error) {
-        console.error('Error fetching car details:', error);
-      }
-    }
-    
 
     else {
       this.setState({ [name]: value });
