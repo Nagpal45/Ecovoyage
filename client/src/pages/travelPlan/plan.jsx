@@ -22,6 +22,9 @@ class Plan extends Component {
       vehicleClasses: [],
       transmissions: [],
       fuelTypes: [],
+      predictedCO2: '',
+      totalDistance: '',
+      totalCO2: '',
     };
   }
 
@@ -69,11 +72,34 @@ class Plan extends Component {
       } catch (error) {
         console.error('Error fetching car details:', error);
       }
-    } else {
+    } 
+    else if(name === "carModel"){
+      this.setState({ [name]: value, vehicleClass: '', transmission: '', fuelType: '' });
+      
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/carData/${this.state.carMake}/${value}`);
+        const vehicleClasses = response.data.vehicle_classes;
+        const transmissions = response.data.transmissions;
+        const fuelTypes = response.data.fuel_types;
+
+        this.setState({
+          vehicleClasses,
+          transmissions,
+          fuelTypes,
+        });
+      }
+      catch (error) {
+        console.error('Error fetching car details:', error);
+      }
+    }
+
+
+    else {
       this.setState({ [name]: value });
       this.handleAutocomplete(name, value);
     }
   }
+
 
   handleSelect = async (value, name) => {
     this.setState({ [name]: value, [`${name}Suggestions`]: [] }, () => {
@@ -99,6 +125,34 @@ class Plan extends Component {
       console.error('Error fetching coordinates:', error);
     }
   };
+
+  calculateDistance = async () => {
+    const { arrivalCoordinates, destinationCoordinates } = this.state;
+
+    if (arrivalCoordinates && destinationCoordinates) {
+      const R = 6371; // Earth's radius in kilometers
+      const lat1 = arrivalCoordinates[0];
+      const lon1 = arrivalCoordinates[1];
+      const lat2 = destinationCoordinates[0];
+      const lon2 = destinationCoordinates[1];
+
+      const dLat = (lat2 - lat1) * (Math.PI / 180);
+      const dLon = (lon2 - lon1) * (Math.PI / 180);
+
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      const distance = R * c; 
+
+      this.setState({ totalDistance: distance }, () => {
+        console.log('Total Distance:', this.state.totalDistance);
+      });
+    }
+  }
+
   
 
   handleAutocomplete = async (name, query) => {
@@ -112,10 +166,23 @@ class Plan extends Component {
     }
   }
 
+  calculateCO2 = () => {
+    const { predictedCO2, totalDistance } = this.state;
+    const CO2 = (predictedCO2 * totalDistance)/1000;
+
+    this.setState({ totalCO2: CO2 }, () => {
+      console.log('Total CO2 Emissions:', this.state.totalCO2);
+    });
+  }
 
   handlePlanSubmit = (event) => {
     event.preventDefault();
     this.sendCarInfotoMLmodel();
+    this.calculateDistance();
+    setTimeout(() => {
+      this.calculateCO2();
+    }
+    , 1000);
   }
 
 
@@ -242,6 +309,13 @@ class Plan extends Component {
             </div>
             <button type="submit" onClick={this.handlePlanSubmit}>Plan</button>
           </form>
+          {this.state.totalCO2 && (
+            <>
+          <p>Predicted CO2 Emissions: {parseFloat(this.state.predictedCO2).toFixed(2)} g/km</p>
+          <p>Total Distance: {parseFloat(this.state.totalDistance).toFixed(2)} km</p>
+          <p>Total CO2 Emissions: {parseFloat(this.state.totalCO2).toFixed(2)} kg</p>
+            </>
+          )}
         </div>
       </div>
     );
