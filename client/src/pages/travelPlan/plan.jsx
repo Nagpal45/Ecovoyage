@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './plan.css';
 import axios from 'axios';
 
-class plan extends Component {
+class Plan extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,24 +15,95 @@ class plan extends Component {
       destination: '',
       arrivalSuggestions: [],
       destinationSuggestions: [],
+      arrivalCoordinates: null,
+      destinationCoordinates: null, 
+      models: [],
+      vehicleClasses: [],
+      transmissions: [],
+      fuelTypes: [],
     };
   }
 
+  sendCarInfotoMLmodel = async () => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/predict', {
+        carMake: this.state.carMake,
+        carModel: this.state.carModel,
+        vehicleClass: this.state.vehicleClass,
+        transmission: this.state.transmission,
+        fuelType: this.state.fuelType,
+      });
+      const predictedCO2 = response.data.prediction;
 
- 
-  handleInputChange = (event) => {
+      
+      this.setState({ predictedCO2 }, () => {
+        console.log('Predicted CO2 Emissions:', this.state.predictedCO2);
+      });
+    } catch (error) {
+      console.error('Error sending car info to ML model:', error);
+    }
+    
+  };
+
+
+  handleInputChange = async (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
-    this.handleAutocomplete(name, value);
+  
+    if (name === 'carMake') {
+      this.setState({ [name]: value, carModel: '', vehicleClass: '', transmission: '', fuelType: '' });
+  
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/carData/${value}`);
+        const models = response.data.models;
+        const vehicleClasses = response.data.vehicle_classes;
+        const transmissions = response.data.transmissions;
+        const fuelTypes = response.data.fuel_types;
+  
+        this.setState({
+          models,
+          vehicleClasses,
+          transmissions,
+          fuelTypes,
+        });
+      } catch (error) {
+        console.error('Error fetching car details:', error);
+      }
+    } else {
+      this.setState({ [name]: value });
+      this.handleAutocomplete(name, value);
+    }
   }
 
-  handleSelect = (value, name) => {
-    this.setState({ [name]: value, [`${name}Suggestions`]: [] });
-  }
+  handleSelect = async (value, name) => {
+    this.setState({ [name]: value, [`${name}Suggestions`]: [] }, () => {
+      this.fetchCoordinates(name);
+    });
+  };
+  
+  fetchCoordinates = async (name) => {
+    try {
+      const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${this.state[name]}&key=d4e73b5ffb22404f9fd4ac67eafae80d`);
+  
+      const coordinates = response.data.results[0].geometry;
+      const lat = coordinates.lat;
+      const lng = coordinates.lng;
+  
+      this.setState({
+        [`${name}Coordinates`]: [lat, lng]
+      }, () => {
+        console.log(this.state.arrivalCoordinates);
+        console.log(this.state.destinationCoordinates);
+      });
+    } catch (error) {
+      console.error('Error fetching coordinates:', error);
+    }
+  };
+  
 
   handleAutocomplete = async (name, query) => {
     try {
       const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${query}&key=d4e73b5ffb22404f9fd4ac67eafae80d`);
+
       const suggestions = response.data.results.map(result => result.formatted);
       this.setState({ [`${name}Suggestions`]: suggestions });
     } catch (error) {
@@ -40,6 +111,11 @@ class plan extends Component {
     }
   }
 
+
+  handlePlanSubmit = (event) => {
+    event.preventDefault();
+    this.sendCarInfotoMLmodel();
+  }
 
 
   render() {
@@ -73,7 +149,7 @@ class plan extends Component {
               >
                 <option value="">Select Car Model</option>
 
-                {['ILX', 'ILX HYBRID', 'MDX 4WD', 'Tacoma 4WD D-Cab TRD Off-Road/Pro', 'Atlas Cross Sport 4MOTION', 'XC40 T4 AWD'].map((model) => (
+                {this.state.models.map((model) => (
                   <option key={model} value={model}>{model}</option>
                 ))}
               </select>
@@ -88,7 +164,7 @@ class plan extends Component {
               >
                 <option value="">Select Vehicle Class</option>
 
-                {['COMPACT', 'SUV - SMALL', 'MID-SIZE', 'TWO-SEATER', 'MINICOMPACT', 'SUBCOMPACT', 'FULL-SIZE', 'STATION WAGON - SMALL', 'SUV - STANDARD', 'VAN - CARGO', 'VAN - PASSENGER', 'PICKUP TRUCK - STANDARD', 'MINIVAN', 'SPECIAL PURPOSE VEHICLE', 'STATION WAGON - MID-SIZE', 'PICKUP TRUCK - SMALL'].map((vehicleClass) => (
+                {this.state.vehicleClasses.map((vehicleClass) => (
                   <option key={vehicleClass} value={vehicleClass}>{vehicleClass}</option>
                 ))}
               </select>
@@ -103,7 +179,7 @@ class plan extends Component {
               >
                 <option value="">Select Transmission</option>
 
-                {['AS5', 'M6', 'AV7', 'AS6', 'AM6', 'A6', 'AM7', 'AV8', 'AS8', 'A7', 'A8', 'M7', 'A4', 'M5', 'AV', 'A5', 'AS7', 'A9', 'AS9', 'AV6', 'AS4', 'AM5', 'AM8', 'AM9', 'AS10', 'A10', 'AV10'].map((transmission) => (
+                {this.state.transmissions.map((transmission) => (
                   <option key={transmission} value={transmission}>{transmission}</option>
                 ))}
               </select>
@@ -118,7 +194,7 @@ class plan extends Component {
               >
                 <option value="">Select Fuel Type</option>
 
-                {['Z', 'D', 'X', 'E', 'N'].map((fuelType) => (
+                {this.state.fuelTypes.map((fuelType) => (
                   <option key={fuelType} value={fuelType}>{fuelType}</option>
                 ))}
               </select>
@@ -161,7 +237,7 @@ class plan extends Component {
                 </div>
               )}
             </div>
-            <button type="submit">Plan</button>
+            <button type="submit" onClick={this.handlePlanSubmit}>Plan</button>
           </form>
         </div>
       </div>
@@ -169,4 +245,4 @@ class plan extends Component {
   }
 }
 
-export default plan;
+export default Plan;

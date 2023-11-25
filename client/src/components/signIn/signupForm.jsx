@@ -26,7 +26,7 @@ export default function SignupForm({ onClose, goBack, handlesignupFormSubmit, si
             <div className="emailFooter">
               <div className="line-container">
                 <div className="gray-line"></div>
-                <div className="centered-text">Not a member?</div>
+                <div className="centered-text">Already a member?</div>
                 <div className="gray-line"></div>
               </div>
               <div className="joinUs">
