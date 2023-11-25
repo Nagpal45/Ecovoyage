@@ -43,6 +43,51 @@ def get_car_data(carMake):
         })
     except Exception as e:
         return jsonify({'error': str(e)})
+    
+@app.route('/carData/<carMake>/<carModel>', methods=['GET'])
+def get_car_data2(carMake, carModel):
+    try:
+        car_data = training_data[training_data['carModel'] == carModel]
+
+        vehicle_classes = car_data['vehicleClass'].unique().tolist()
+        transmissions = car_data['transmission'].unique().tolist()
+        fuel_types = car_data['fuelType'].unique().tolist()
+
+        return jsonify({
+            'vehicle_classes': vehicle_classes,
+            'transmissions': transmissions,
+            'fuel_types': fuel_types
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+@app.route('/carData/<carMake>/<carModel>/<vehicleClass>', methods=['GET'])
+def get_car_data3(carMake, carModel, vehicleClass):
+    try:
+        car_data = training_data[training_data['vehicleClass'] == vehicleClass]
+
+        transmissions = car_data['transmission'].unique().tolist()
+        fuel_types = car_data['fuelType'].unique().tolist()
+
+        return jsonify({
+            'transmissions': transmissions,
+            'fuel_types': fuel_types
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+@app.route('/carData/<carMake>/<carModel>/<vehicleClass>/<transmission>', methods=['GET'])
+def get_car_data4(carMake, carModel, vehicleClass, transmission):
+    try:
+        car_data = training_data[training_data['transmission'] == transmission]
+
+        fuel_types = car_data['fuelType'].unique().tolist()
+
+        return jsonify({
+            'fuel_types': fuel_types
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
     app.run(port=8000)
