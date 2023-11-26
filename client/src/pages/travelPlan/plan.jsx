@@ -120,9 +120,51 @@ class Plan extends Component {
 
 
   render() {
-    return (
+    return (<div>
+    <div className='subNavbar'>
+      <div className="subNavbar-group">
+              <label htmlFor="arrival">From</label>
+              <input
+                type="text"
+                id="arrival"
+                name="arrival"
+                value={this.state.arrival}
+                onChange={this.handleInputChange}
+              />
+              {this.state.arrivalSuggestions.length > 0 && (
+                <div className="autocomplete-dropdown-container">
+                  {this.state.arrivalSuggestions.map((suggestion, index) => (
+                    <div key={index} onClick={() => this.handleSelect(suggestion, 'arrival')}>
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="subNavbar-group">
+              <label htmlFor="destination">To</label>
+              <input
+                type="text"
+                id="destination"
+                name="destination"
+                value={this.state.destination}
+                onChange={this.handleInputChange}
+              />
+              {this.state.destinationSuggestions.length > 0 && (
+                <div className="autocomplete-dropdown-container">
+                  {this.state.destinationSuggestions.map((suggestion, index) => (
+                    <div key={index} onClick={() => this.handleSelect(suggestion, 'destination')}>
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <button type="submit" onClick={this.handlePlanSubmit}><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+</svg></button>
+            </div>
       <div className="card-container">
-      <img src={image} alt="background" className="background-image" />
         <div className="card">
           <h2>Plan Your Trip</h2>
           <p className='sub_card_heading'>Discover the most Eco-friendly option for your trip.</p>
@@ -202,47 +244,11 @@ class Plan extends Component {
                 ))}
               </select>
             </div>
-            <div className="form-group">
-              <label htmlFor="arrival">Arrival</label>
-              <input
-                type="text"
-                id="arrival"
-                name="arrival"
-                value={this.state.arrival}
-                onChange={this.handleInputChange}
-              />
-              {this.state.arrivalSuggestions.length > 0 && (
-                <div className="autocomplete-dropdown-container">
-                  {this.state.arrivalSuggestions.map((suggestion, index) => (
-                    <div key={index} onClick={() => this.handleSelect(suggestion, 'arrival')}>
-                      {suggestion}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="destination">Destination</label>
-              <input
-                type="text"
-                id="destination"
-                name="destination"
-                value={this.state.destination}
-                onChange={this.handleInputChange}
-              />
-              {this.state.destinationSuggestions.length > 0 && (
-                <div className="autocomplete-dropdown-container">
-                  {this.state.destinationSuggestions.map((suggestion, index) => (
-                    <div key={index} onClick={() => this.handleSelect(suggestion, 'destination')}>
-                      {suggestion}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            
             <button type="submit" onClick={this.handlePlanSubmit}>Plan</button>
           </form>
         </div>
+      </div>
       </div>
     );
   }
