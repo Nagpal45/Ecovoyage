@@ -204,7 +204,6 @@ class Plan extends Component {
 
 
   render() {
-<<<<<<< HEAD
     return (
       <>
       <div className="hotelData">
@@ -220,8 +219,6 @@ class Plan extends Component {
           </div>
         ))}
       </div>
-=======
->>>>>>> 84ad5e4847a7b65b8992d167ed38d8593f1e57ff
     return (<div>
     <div className='subNavbar'>
       <div className="subNavbar-group">
@@ -359,10 +356,7 @@ class Plan extends Component {
         </div>
       </div>
       </div>
-<<<<<<< HEAD
       </>
-=======
->>>>>>> 84ad5e4847a7b65b8992d167ed38d8593f1e57ff
     );
   }
 }
