@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './plan.css';
 import axios from 'axios';
-import image from './images/background1.jpg';
 
 class Plan extends Component {
   constructor(props) {
@@ -25,6 +24,7 @@ class Plan extends Component {
       predictedCO2: '',
       totalDistance: '',
       totalCO2: '',
+      hotelData: [],
     };
   }
 
@@ -185,11 +185,85 @@ class Plan extends Component {
     , 1000);
   }
 
+  fetchHotelData = async (page = 1) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/hotels?page=${page}`);
+      const hotels = response.data;
+      this.setState({ hotelData: hotels });
+      console.log(hotels[0]);
+
+    } catch (error) {
+      console.error('Error fetching hotel data:', error);
+    }
+  };
+
+  componentDidMount() {
+    this.fetchHotelData();
+  }
+
+
 
   render() {
     return (
+      <>
+      <div className="hotelData">
+        {this.state.hotelData.map((hotel) => (
+          <div className="hotelCard" key={hotel.id}>
+            <img src={hotel.medium_url} alt="hotel" />
+            <div className="hotelInfo">
+              <h3>{hotel.name}</h3>
+              <p>{hotel.summary}</p>
+              <p>Price: {hotel.price}</p>
+              <p>Rating: {hotel.review_scores_rating}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    return (<div>
+    <div className='subNavbar'>
+      <div className="subNavbar-group">
+              <label htmlFor="arrival">From</label>
+              <input
+                type="text"
+                id="arrival"
+                name="arrival"
+                value={this.state.arrival}
+                onChange={this.handleInputChange}
+              />
+              {this.state.arrivalSuggestions.length > 0 && (
+                <div className="autocomplete-dropdown-container">
+                  {this.state.arrivalSuggestions.map((suggestion, index) => (
+                    <div key={index} onClick={() => this.handleSelect(suggestion, 'arrival')}>
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="subNavbar-group">
+              <label htmlFor="destination">To</label>
+              <input
+                type="text"
+                id="destination"
+                name="destination"
+                value={this.state.destination}
+                onChange={this.handleInputChange}
+              />
+              {this.state.destinationSuggestions.length > 0 && (
+                <div className="autocomplete-dropdown-container">
+                  {this.state.destinationSuggestions.map((suggestion, index) => (
+                    <div key={index} onClick={() => this.handleSelect(suggestion, 'destination')}>
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <button type="submit" onClick={this.handlePlanSubmit}><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+</svg></button>
+            </div>
       <div className="card-container">
-      <img src={image} alt="background" className="background-image" />
         <div className="card">
           <h2>Plan Your Trip</h2>
           <p className='sub_card_heading'>Discover the most Eco-friendly option for your trip.</p>
@@ -269,44 +343,7 @@ class Plan extends Component {
                 ))}
               </select>
             </div>
-            <div className="form-group">
-              <label htmlFor="arrival">Arrival</label>
-              <input
-                type="text"
-                id="arrival"
-                name="arrival"
-                value={this.state.arrival}
-                onChange={this.handleInputChange}
-              />
-              {this.state.arrivalSuggestions.length > 0 && (
-                <div className="autocomplete-dropdown-container">
-                  {this.state.arrivalSuggestions.map((suggestion, index) => (
-                    <div key={index} onClick={() => this.handleSelect(suggestion, 'arrival')}>
-                      {suggestion}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="destination">Destination</label>
-              <input
-                type="text"
-                id="destination"
-                name="destination"
-                value={this.state.destination}
-                onChange={this.handleInputChange}
-              />
-              {this.state.destinationSuggestions.length > 0 && (
-                <div className="autocomplete-dropdown-container">
-                  {this.state.destinationSuggestions.map((suggestion, index) => (
-                    <div key={index} onClick={() => this.handleSelect(suggestion, 'destination')}>
-                      {suggestion}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            
             <button type="submit" onClick={this.handlePlanSubmit}>Plan</button>
           </form>
           {this.state.totalCO2 && (
@@ -318,6 +355,8 @@ class Plan extends Component {
           )}
         </div>
       </div>
+      </div>
+      </>
     );
   }
 }
