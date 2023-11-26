@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './plan.css';
 import axios from 'axios';
+import image from './images/background1.jpg';
 
 class Plan extends Component {
   constructor(props) {
@@ -188,18 +189,20 @@ class Plan extends Component {
   render() {
     return (
       <div className="card-container">
+      <img src={image} alt="background" className="background-image" />
         <div className="card">
           <h2>Plan Your Trip</h2>
+          <p className='sub_card_heading'>Discover the most Eco-friendly option for your trip.</p>
           <form className="form">
             <div className="form-group">
-              <label htmlFor="carMake">Car Make</label>
+              <label htmlFor="carMake">Car Manufacturer</label>
               <select
                 id="carMake"
                 name="carMake"
                 value={this.state.carMake}
                 onChange={this.handleInputChange}
               >
-                <option value="">Select Car Make</option>
+                <option value="">Select Car Manufacturer</option>
 
                 {['ACURA', 'ALFA ROMEO', 'ASTON MARTIN', 'AUDI', 'BENTLEY', 'BMW', 'BUICK', 'CADILLAC', 'CHEVROLET', 'CHRYSLER', 'DODGE', 'FIAT', 'FORD', 'GMC', 'HONDA', 'HYUNDAI', 'INFINITI', 'JAGUAR', 'JEEP', 'KIA', 'LAMBORGHINI', 'LAND ROVER', 'LEXUS', 'LINCOLN', 'MASERATI', 'MAZDA', 'MERCEDES-BENZ', 'MINI', 'MITSUBISHI', 'NISSAN', 'PORSCHE', 'RAM', 'ROLLS-ROYCE', 'SCION', 'SMART', 'SRT', 'SUBARU', 'TOYOTA', 'VOLKSWAGEN', 'VOLVO', 'GENESIS', 'BUGATTI',].map((make) => (
                   <option key={make} value={make}>{make}</option>
