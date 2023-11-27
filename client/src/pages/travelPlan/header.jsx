@@ -1,0 +1,25 @@
+
+import { Autocomplete } from "@react-google-maps/api";
+import { InputBase } from "@material-ui/core";
+import { useState } from "react";
+
+export default function Header ({ setCoordinates })  {
+    const [autocomplete, setAutoComplete] = useState(null);
+  
+    const onLoad = (autoC) => setAutoComplete(autoC);
+    const onPlaceChanged = () => {
+      const lat = Number(autocomplete.getPlace().geometry.location.lat());
+      const lng = Number(autocomplete.getPlace().geometry.location.lng());
+  
+      console.log(lat, lng);
+      setCoordinates({ lat: lat, lng: lng });
+    };
+  
+    return (
+      <div className="header">
+        <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+          <InputBase />
+        </Autocomplete>
+      </div>
+    );
+  };
