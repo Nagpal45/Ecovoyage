@@ -39,7 +39,7 @@ let hotelData = [];
 
 function loadHotels() {
     try{
-        const data = fs.readFileSync('./airbnb-listings.json');
+        const data = fs.readFileSync('./airbnb-listings1.json');
         hotelData = JSON.parse(data);
     }
     catch(err){
