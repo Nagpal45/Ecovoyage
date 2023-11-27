@@ -1,6 +1,93 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import "./plan.css";
 import axios from "axios";
+import { Typography, InputLabel, MenuItem, FormControl, Select } from '@material-ui/core';
+
+import { Autocomplete } from '@react-google-maps/api'
+import { InputBase} from '@material-ui/core'
+
+import GoogleMapReact from 'google-map-react';
+import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
+
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() => ({
+  paper: {
+    padding: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100px',
+  },
+  mapContainer: {
+    height: '85vh', width: '100vh',
+  },
+  markerContainer: {
+    position: 'absolute', transform: 'translate(-50%, -50%)', zIndex: 1, '&:hover': { zIndex: 2 },
+  },
+  pointer: {
+    cursor: 'pointer',
+  },
+}));
+
+const Map = ({setCoordinates, setBounds, coordinates, places}) => {
+    const classes = useStyles();
+
+    return (   
+        <div className={classes.mapContainer}>
+            <GoogleMapReact
+                bootstrapURLKeys={{ key: 'AIzaSyDVNAi8lLh0wpnsm746LkkXpL6C8ejfqSE' }}
+                defaultCenter={coordinates}
+                center={coordinates}
+                defaultZoom={14}
+                margin={[50, 50, 50, 50]}
+                options={{
+                    mapTypeControl: true,
+                }}
+                onChange={(e) => {
+                    setCoordinates({lat: e.center.lat, lng: e.center.lng})
+                    setBounds({ne: e.marginBounds.ne, sw: e.marginBounds.sw})
+                }}
+            >
+                {places?.map((place, i) => (
+                    <div
+                        className={classes.markerContainer}
+                        lat={Number(place.latitude)}
+                        lng={Number(place.longitude)}
+                        key={i}
+                    >
+                        {
+                            <LocationOnOutlinedIcon color="primary" fontSize="large" />
+                        }
+                    </div>
+                )
+                )}
+                
+            </GoogleMapReact>
+        </div>
+    )
+}
+
+
+const Header = ({ setCoordinates }) => {
+
+    const [autocomplete, setAutoComplete] = useState(null)
+
+    const onLoad = (autoC) => setAutoComplete(autoC)
+    const onPlaceChanged = () => {
+      const lat = Number(autocomplete.getPlace().geometry.location.lat());
+      const lng = Number(autocomplete.getPlace().geometry.location.lng());
+  
+      console.log(lat, lng);
+      setCoordinates({ lat: lat, lng: lng });
+  };
+  
+
+    return (
+        <div className="header">
+            <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+                <InputBase />
+            </Autocomplete>
+        </div>
+    )
+}
+
 
 class Plan extends Component {
   constructor(props) {
@@ -25,8 +112,35 @@ class Plan extends Component {
       totalDistance: "",
       totalCO2: "",
       hotelData: [],
+      places: [],
+      coordinates: {},
+      bounds: {},
+      type: "hotels",
     };
   }
+
+  getPlacesData = async (type, sw, ne) => {
+  try {
+    const { data: { data } } = await axios.get(`https://travel-advisor.p.rapidapi.com/${type}/list-in-boundary`, { 
+      params : {
+        bl_longitude: sw.lng,
+        bl_latitude: sw.lat,
+        tr_latitude: ne.lat,
+        tr_longitude: ne.lng,
+      },
+      headers: {
+        'X-RapidAPI-Key': 'adc2c4ebc5msh5ecd1e81e8395fap121945jsn377f34bb86c1',
+        'X-RapidAPI-Host': 'travel-advisor.p.rapidapi.com'
+      }
+    });
+
+    console.log(data);
+    return data;
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
 
   sendCarInfotoMLmodel = async () => {
     try {
@@ -217,12 +331,62 @@ class Plan extends Component {
   };
 
   componentDidMount() {
-    this.fetchHotelData();
+    navigator.geolocation.getCurrentPosition(({coords: {latitude, longitude}}) => {
+      this.setState({
+        coordinates: {lat: latitude, lng: longitude},
+      });
+  })
+
+  setTimeout(() => {
+  if (this.state.bounds.sw && this.state.bounds.ne) {
+    this.getPlacesData(this.state.type, this.state.bounds.sw, this.state.bounds.ne)
+    .then((data) => {
+      console.log(data);
+      this.setState({ places: data })
+      })
   }
+}, 1000)
+  }
+
 
   render() {
     return (
       <div className="travelPlanPage">
+      <Header setCoordinates={(newCoordinates) => this.setState({ coordinates: newCoordinates })} />
+
+            <div>
+                <Typography variant="h4">Food & Dining around you</Typography>
+                <FormControl>
+                    <InputLabel id="type">Type</InputLabel>
+                    <Select value={this.state.type} onChange={(e) => this.setState({type: e.target.value})}>
+                    <MenuItem value="restaurants">Restaurants</MenuItem>
+                    <MenuItem value="hotels">Hotels</MenuItem>
+                    <MenuItem value="attractions">Attractions</MenuItem>
+                    </Select>
+                </FormControl>
+                <Map 
+                    setCoordinates={(newCoordinates) => this.setState({ coordinates: newCoordinates })} 
+                    setBounds={(newBounds) => this.setState({ bounds: newBounds })}
+                    coordinates={this.state.coordinates}
+                    places={this.state.places}
+            />
+                {/* filtering using rating; krne ki zarurat nhi hai */}
+                {/* <FormControl className={classes.formControl}>
+                    <InputLabel>Rating</InputLabel>
+                    <Select value={rating} onChange={(e) => setRating(e.target.value)}>
+                    <MenuItem value="">All</MenuItem>
+                    <MenuItem value="3">Above 3.0</MenuItem>
+                    <MenuItem value="4">Above 4.0</MenuItem>
+                    <MenuItem value="4.5">Above 4.5</MenuItem>
+                    </Select>
+                </FormControl> */}
+
+                {this.state.places?.map((place, i) => (
+                    <div key={i}>
+                        <Typography variant="h5">{place.name}</Typography>
+                    </div>
+                ))}
+            </div>
         <div className="subNavbar">
           <div className="subNavbar-group">
             <label htmlFor="arrival">From</label>
@@ -274,14 +438,14 @@ class Plan extends Component {
               width="15"
               height="15"
               fill="currentColor"
-              class="bi bi-search"
+              className="bi bi-search"
               viewBox="0 0 16 16"
             >
               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
             </svg>
           </button>
         </div>
-        <div className="hotelData">
+        {/* <div className="hotelData">
           {this.state.hotelData.map((hotel) => (
             <div className="hotelCard" key={hotel.id}>
               <img
@@ -305,7 +469,7 @@ class Plan extends Component {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
         <div className="card-container">
           <div className="card">
             <h2>Plan Your Trip</h2>
