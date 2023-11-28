@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./plan.css";
 import axios from "axios";
-import {
-  Typography,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-} from "@material-ui/core";
 import Header from "./header.jsx";
-import Map from "./map.jsx";
+import Map from "../../components/map/map.jsx";
 
 
 
@@ -24,8 +17,8 @@ export default function Plan() {
   const [destination, setDestination] = useState([]);
   const [arrivalSuggestions, setArrivalSuggestions] = useState([]);
   const [destinationSuggestions, setDestinationSuggestions] = useState([]);
-  const [arrivalCoordinates, setArrivalCoordinates] = useState(null);
-  const [destinationCoordinates, setDestinationCoordinates] = useState(null);
+  const [arrivalCoordinates, setArrivalCoordinates] = useState([]);
+  const [destinationCoordinates, setDestinationCoordinates] = useState([]);
   const [models, setModels] = useState([]);
   const [vehicleClasses, setVehicleClasses] = useState([]);
   const [transmissions, setTransmissions] = useState([]);
@@ -33,7 +26,7 @@ export default function Plan() {
   const [predictedCO2, setPredictedCO2] = useState(null);
   const [totalDistance, setTotalDistance] = useState(null);
   const [totalCO2, setTotalCO2] = useState(null);
-  const [hotelData, setHotelData] = useState([]);
+  // const [hotelData, setHotelData] = useState([]);
   const [coordinates, setCoordinates] = useState(null);
   const [bounds, setBounds] = useState(null);
   const [places, setPlaces] = useState([]);
@@ -60,7 +53,7 @@ export default function Plan() {
         }
       );
 
-      console.log(data);
+      console.log(data[0]);
       return data;
     } catch (error) {
       console.log(error);
@@ -131,8 +124,11 @@ export default function Plan() {
         console.error("Error fetching car details:", error);
       }
     } else {
-      if(name === "arrival") setArrival(value);
-      else setDestination(value);
+      if (name === "vehicleClass") setVehicleClass(value);
+      else if (name === "transmission") setTransmission(value);
+      else if (name === "fuelType") setFuelType(value);
+      else if (name === "arrival") setArrival(value);
+      else if (name === "destination") setDestination(value);
       handleAutocomplete(name, value);
     }
   };
@@ -141,26 +137,29 @@ export default function Plan() {
     if(name === "arrival") {
       setArrival(value);
       setArrivalSuggestions([]);
+      fetchCoordinates(name,value);
     }
     else {
       setDestination(value);
       setDestinationSuggestions([]);
+      fetchCoordinates(name,value);
     }
-    fetchCoordinates(name);
+    console.log();
   };
 
-  const fetchCoordinates = async (name) => {
+  const fetchCoordinates = async (name,value) => {
     try {
       const response = await axios.get(
-        `https://api.opencagedata.com/geocode/v1/json?q=${name}&key=d4e73b5ffb22404f9fd4ac67eafae80d`
+        `https://api.opencagedata.com/geocode/v1/json?q=${[value]}&key=d4e73b5ffb22404f9fd4ac67eafae80d`
       );
-
+ 
       const coordinates = response.data.results[0].geometry;
-      const lat = coordinates.lat;
-      const lng = coordinates.lng;
+      console.log(coordinates);
 
-      if(name === "arrival") setArrivalCoordinates([lat, lng]);
-      else setDestinationCoordinates([lat, lng]);
+      if(name === "arrival") setArrivalCoordinates([coordinates.lat, coordinates.lng]);
+      else setDestinationCoordinates([coordinates.lat, coordinates.lng]);
+      
+     
     } catch (error) {
       console.error("Error fetching coordinates:", error);
     }
@@ -168,7 +167,7 @@ export default function Plan() {
 
   const calculateDistance = async () => {
     if (arrivalCoordinates && destinationCoordinates) {
-      const R = 6371; // Earth's radius in kilometers
+      const R = 6371; 
       const lat1 = arrivalCoordinates[0];
       const lon1 = arrivalCoordinates[1];
       const lat2 = destinationCoordinates[0];
@@ -218,7 +217,8 @@ export default function Plan() {
     sendCarInfotoMLmodel();
     setTimeout(() => {
       calculateCO2();
-    }, 1000);
+    }
+    , 1000);
   };
 
   const handleSearchSubmit = (event) => {
@@ -226,20 +226,20 @@ export default function Plan() {
     calculateDistance();
   };
 
-  const fetchHotelData = async (page = 1) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/hotels?page=${page}`
-      );
-      const hotels = response.data;
-      setHotelData(hotels);
-    } catch (error) {
-      console.error("Error fetching hotel data:", error);
-    }
-  };
-  useEffect(() => {
-    fetchHotelData();
-  }, []);
+  // const fetchHotelData = async (page = 1) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:5000/api/hotels?page=${page}`
+  //     );
+  //     const hotels = response.data;
+  //     setHotelData(hotels);
+  //   } catch (error) {
+  //     console.error("Error fetching hotel data:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchHotelData();
+  // }, []);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -256,54 +256,14 @@ export default function Plan() {
         bounds?.sw,
         bounds?.ne
       ).then((data) => {
-        console.log(data);
         setPlaces(data);
+        console.log(data);
       });
     }
-  }, [type, bounds, coordinates]);
+  }, [type,coordinates, bounds]);
 
   return (
     <div className="travelPlanPage">
-      <Header
-        setCoordinates={setCoordinates}
-      />
-
-      <div>
-        <Typography variant="h4">Food & Dining around you</Typography>
-        <FormControl>
-          <InputLabel id="type">Type</InputLabel>
-          <Select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-          >
-            <MenuItem value="restaurants">Restaurants</MenuItem>
-            <MenuItem value="hotels">Hotels</MenuItem>
-            <MenuItem value="attractions">Attractions</MenuItem>
-          </Select>
-        </FormControl>
-        <Map
-          setCoordinates={setCoordinates}
-          setBounds={setBounds}
-          coordinates={coordinates}
-          places={places}
-        />
-        {/* filtering using rating; krne ki zarurat nhi hai */}
-        {/* <FormControl className={classes.formControl}>
-                    <InputLabel>Rating</InputLabel>
-                    <Select value={rating} onChange={(e) => setRating(e.target.value)}>
-                    <MenuItem value="">All</MenuItem>
-                    <MenuItem value="3">Above 3.0</MenuItem>
-                    <MenuItem value="4">Above 4.0</MenuItem>
-                    <MenuItem value="4.5">Above 4.5</MenuItem>
-                    </Select>
-                </FormControl> */}
-
-        {places?.map((place, i) => (
-          <div key={i}>
-            <Typography variant="h5">{place.name}</Typography>
-          </div>
-        ))}
-      </div>
       <div className="subNavbar">
         <div className="subNavbar-group">
           <label htmlFor="arrival">From</label>
@@ -361,6 +321,68 @@ export default function Plan() {
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
           </svg>
         </button>
+      </div>
+      <Header
+        setCoordinates={setCoordinates}
+      />
+
+      <div>
+        <h4>Hotels/Attractions</h4>
+        <form>
+          <label id="type">Type</label>
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
+            <option value="restaurants">Restaurants</option>
+            <option value="hotels">Hotels</option>
+            <option value="attractions">Attractions</option>
+          </select>
+        </form>
+        <Map
+          setCoordinates={setCoordinates}
+          setBounds={setBounds}
+          coordinates={coordinates}
+          places={places}
+        />
+        {/* filtering using rating*/}
+        {/* <FormControl className={classes.formControl}>
+                    <InputLabel>Rating</InputLabel>
+                    <Select value={rating} onChange={(e) => setRating(e.target.value)}>
+                    <MenuItem value="">All</MenuItem>
+                    <MenuItem value="3">Above 3.0</MenuItem>
+                    <MenuItem value="4">Above 4.0</MenuItem>
+                    <MenuItem value="4.5">Above 4.5</MenuItem>
+                    </Select>
+                </FormControl> */}
+
+        {places?.map((place, i) => (
+          <div key={i}>
+            <h5>{place.name}</h5>
+            <img style={{width: "100px", height: "100px"}}
+              src={
+                place.photo
+                  ? place.photo.images.medium.url
+                  : "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg"
+              }
+              alt={place.name}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg";
+              }}
+            />
+            <p>{parseFloat(place.distance).toFixed(2)} km</p>
+            <p>{place.location_string}</p>
+            <p>{place.price}</p>
+            <p>{place.rating}</p>
+            <button onClick = {
+              () => window.open(`https://www.tripadvisor.com/Hotel_Review-g304551-d${place.location_id}`)
+            }>
+              View Details
+            </button>
+          </div>
+        ))}
       </div>
       {/* <div className="hotelData">
           {hotelData.map((hotel) => (

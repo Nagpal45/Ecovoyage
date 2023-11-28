@@ -6,7 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 require('./passport');
 require('./db');
-const fs = require('fs');
+// const fs = require('fs');
 
 const app = express();
 app.use(express.json());
@@ -35,30 +35,30 @@ app.use(cors({
 app.use('/auth', authRoutes);
 app.use('/api/users', userRoutes)
 
-let hotelData = [];
+// let hotelData = [];
 
-function loadHotels() {
-    try{
-        const data = fs.readFileSync('./airbnb-listings1.json');
-        hotelData = JSON.parse(data);
-    }
-    catch(err){
-        console.log(err);
-    }
-}
+// function loadHotels() {
+//     try{
+//         const data = fs.readFileSync('./airbnb-listings1.json');
+//         hotelData = JSON.parse(data);
+//     }
+//     catch(err){
+//         console.log(err);
+//     }
+// }
 
-loadHotels();
+// loadHotels();
 
-app.get('/api/hotels', (req, res) => {
-    const page = req.query.page;
-    const pageSize = 100;
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
+// app.get('/api/hotels', (req, res) => {
+//     const page = req.query.page;
+//     const pageSize = 100;
+//     const startIndex = (page - 1) * pageSize;
+//     const endIndex = startIndex + pageSize;
 
-    const results = hotelData.slice(startIndex, endIndex);
-    res.json(results);
-}
-);
+//     const results = hotelData.slice(startIndex, endIndex);
+//     res.json(results);
+// }
+// );
 
 
 app.listen(5000, () => console.log('Server is running on port 5000'));
