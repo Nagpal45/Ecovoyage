@@ -27,21 +27,7 @@
   position: relative;
 }
 
-.subNavbar-group >label{
-  font-size: 1vw;
-  font-weight: 800;
-  font-family: 'Quicksand', sans-serif;
-  margin-right: 1vw;
-}
-.subNavbar-group >input{
-  width: 100%;
-  padding: 0.5vw;
-  border-radius: 0.5vw;
-  font-size: 1vw;
-  color: #333;
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 500;
-}
+
 
 .subNavbar >button{
   background-color: #1fc98b;
@@ -55,37 +41,6 @@
 
 .subNavbar > button:hover {
   background-color:#1aa978 ;
-}
-.autocomplete-dropdown-container {
-  position: absolute;
-  width: 13vw;
-  max-height: 150px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-  font-family: 'Quicksand', sans-serif;
-  font-family: 200;
-  font-size: 0.7vw;
-  text-align: left;
-  top: 2.5vw;
-  left: 2.3vw;
-  border-radius: 0.5vw;
-}
-
-.c1{
-  left: 3.5vw;
-}
-
-.autocomplete-dropdown-container div {
-  padding: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.autocomplete-dropdown-container div:hover {
-  background-color: #ccc;
 }
 
 .card-container {
