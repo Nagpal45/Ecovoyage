@@ -1,4 +1,3 @@
-
 import { Autocomplete } from "@react-google-maps/api";
 import { useState } from "react";
 
@@ -15,9 +14,9 @@ export default function Header ({ setCoordinates })  {
     };
   
     return (
-      <div className="header">
+      <div className="planHeader">
         <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-          <input type="text" placeholder="Enter an address" />
+          <input type="text" placeholder="Enter an address" className="planHeaderInput"/>
         </Autocomplete>
       </div>
     );

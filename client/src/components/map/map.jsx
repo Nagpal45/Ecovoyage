@@ -15,6 +15,8 @@ export default function Map({
     </div>
   );
   return (
+    <div className="map">
+
     <div className="mapContainer">
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyDVNAi8lLh0wpnsm746LkkXpL6C8ejfqSE" }}
@@ -34,6 +36,7 @@ export default function Map({
           <Marker key={i} lat={Number(place.latitude) || 0} lng={Number(place.longitude) || 0} />
         ))}
       </GoogleMapReact>
+    </div>
     </div>
   );
 }

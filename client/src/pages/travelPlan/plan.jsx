@@ -3,8 +3,7 @@ import "./plan.css";
 import axios from "axios";
 import Header from "./header.jsx";
 import Map from "../../components/map/map.jsx";
-
-
+import { AttachMoney, Grade, LocationOn } from "@material-ui/icons";
 
 export default function Plan() {
   const [carMake, setCarMake] = useState("");
@@ -24,7 +23,7 @@ export default function Plan() {
   const [coordinates, setCoordinates] = useState(null);
   const [bounds, setBounds] = useState(null);
   const [places, setPlaces] = useState([]);
-  const [type, setType] = useState("hotels");
+  const [type, setType] = useState("restaurants");
 
   const getPlacesData = async (type, sw, ne) => {
     try {
@@ -41,13 +40,11 @@ export default function Plan() {
           },
           headers: {
             "X-RapidAPI-Key":
-              "adc2c4ebc5msh5ecd1e81e8395fap121945jsn377f34bb86c1",
+              "9fa0cb891emsh2fee2f76b89e6f5p15f31ajsnf7118cb0ba1f",
             "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
           },
         }
       );
-
-      console.log(data[0]);
       return data;
     } catch (error) {
       console.log(error);
@@ -124,11 +121,9 @@ export default function Plan() {
     }
   };
 
-  
   const calculateDistance = async () => {
-    console.log(arrivalCoordinates, destinationCoordinates);
     if (arrivalCoordinates && destinationCoordinates) {
-      const R = 6371; 
+      const R = 6371;
       const lat1 = arrivalCoordinates.lat;
       const lon1 = arrivalCoordinates.lng;
       const lat2 = destinationCoordinates.lat;
@@ -147,12 +142,10 @@ export default function Plan() {
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
       const distance = R * c;
-      console.log(distance);
-     setTotalDistance(distance);
+      setTotalDistance(distance);
     }
   };
 
-  
   const calculateCO2 = () => {
     const CO2 = (predictedCO2 * totalDistance) / 1000;
     setTotalCO2(CO2);
@@ -171,7 +164,10 @@ export default function Plan() {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    calculateDistance();
+    setCoordinates(destinationCoordinates);
+    setTimeout(() => {
+      calculateDistance();
+    }, 1000);
   };
 
   useEffect(() => {
@@ -183,17 +179,14 @@ export default function Plan() {
   }, []);
 
   useEffect(() => {
-    if (bounds?.sw && bounds?.ne) {
-      getPlacesData(
-        type,
-        bounds?.sw,
-        bounds?.ne
-      ).then((data) => {
-        setPlaces(data);
-        console.log(data);
-      });
-    }
-  }, [type,coordinates, bounds]);
+    setTimeout(() => {
+      if (bounds?.sw && bounds?.ne) {
+        getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
+          setPlaces(data);
+        });
+      }
+    }, 1000);
+  }, [type, coordinates, bounds]);
 
   return (
     <div className="travelPlanPage">
@@ -220,53 +213,123 @@ export default function Plan() {
         </button>
       </div>
 
-      <div>
-        <h4>Hotels/Attractions</h4>
-        <form>
-          <label id="type">Type</label>
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
+      <div className="planDisplayContainer">
+        <div className="selectTypeContainer">
+          <div
+            onClick={() => setType("hotels")}
+            className={
+              type === "hotels" ? "selectType activeType" : "selectType"
+            }
           >
-            <option value="restaurants">Restaurants</option>
-            <option value="hotels">Hotels</option>
-            <option value="attractions">Attractions</option>
-          </select>
-        </form>
+            Hotels
+          </div>
+          <div
+            onClick={() => setType("restaurants")}
+            className={
+              type === "restaurants" ? "selectType activeType" : "selectType"
+            }
+          >
+            Restaurants
+          </div>
+          <div
+            onClick={() => setType("attractions")}
+            className={
+              type === "attractions" ? "selectType activeType" : "selectType"
+            }
+          >
+            Attractions
+          </div>
+        </div>
         <Map
           setCoordinates={setCoordinates}
           setBounds={setBounds}
           coordinates={coordinates}
           places={places}
         />
+        <div className="contentDisplay">
+          <h4>Explore {type}</h4>
+          <div className="placesContainer">
+            {places?.slice(0, 8).map((place, i) => (
+              
+              <div key={i} className="explorePlace">
+                <img
+                  src={
+                    place.photo
+                      ? place.photo.images.medium.url
+                      : "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg"
+                  }
+                  alt={place.name}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src =
+                      "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg";
+                  }}
+                />
+                <div className="explorePlaceDetails">
+                  <h5>{place.name?.split(",")[0]}</h5>
+                  <p>{parseFloat(place.distance).toFixed(2)} km</p>
+                  <div className="placeDist">
+                    <LocationOn
+                      color="black"
+                      style={{
+                        fontSize: "1.2vw",
+                      }}
+                    />
+                    <p>
+                      {place.address ? place.address : place.location_string}
+                    </p>
+                  </div>
+                  <div className="placeDist">
+                    <AttachMoney
+                      color="black"
+                      style={{
+                        fontSize: "1.2vw",
+                      }}
+                    />
+                    <p>{place.price?.replace("$", "")?.replace("$", "")}</p>
+                  </div>
+                </div>
+                <div className="explorePlaceLinks">
+                  <div className="placeDist">
+                    <Grade
+                      color="primary"
+                      style={{
+                        fontSize: "1.2vw",
+                      }}
+                    />
+                    <p>{place.rating}</p>
+                  </div>
+                  <div className="">
 
-        {places?.map((place, i) => (
-          <div key={i}>
-            <h5>{place.name}</h5>
-            <img style={{width: "100px", height: "100px"}}
-              src={
-                place.photo
-                  ? place.photo.images.medium.url
-                  : "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg"
-              }
-              alt={place.name}
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src =
-                  "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg";
-              }}
-            />
-            <p>{parseFloat(place.distance).toFixed(2)} km</p>
-            <p>{place.location_string}</p>
-            <p>{place.price}</p>
-            <p>{place.rating}</p>
-            <button onClick = {
-              () => window.open(`https://www.tripadvisor.com/Hotel_Review-g304551-d${place.location_id}`)
-            }>
-              View Details
-            </button>
+                  {place.website ? (
+                    <a href={place.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    >
+                    <img
+                      src="/images/website.png"
+                      alt=""
+                      className="websiteLink"
+                    />
+                    </a>
+                  ) : null}
+                  <a
+                    href={`https://www.tripadvisor.com/Hotel_Review-g304551-d${place.location_id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <img
+                      src="/images/tripadvisor.png"
+                      alt=""
+                      className="tripLink"
+                    />
+                  </a>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
       <div className="card-container">
@@ -412,17 +475,11 @@ export default function Plan() {
           {totalCO2 && (
             <>
               <p>
-                Predicted CO2 Emissions:{" "}
-                {parseFloat(predictedCO2).toFixed(2)} g/km
+                Predicted CO2 Emissions: {parseFloat(predictedCO2).toFixed(2)}{" "}
+                g/km
               </p>
-              <p>
-                Total Distance:{" "}
-                {parseFloat(totalDistance).toFixed(2)} km
-              </p>
-              <p>
-                Total CO2 Emissions:{" "}
-                {parseFloat(totalCO2).toFixed(2)} kg
-              </p>
+              <p>Total Distance: {parseFloat(totalDistance).toFixed(2)} km</p>
+              <p>Total CO2 Emissions: {parseFloat(totalCO2).toFixed(2)} kg</p>
             </>
           )}
         </div>
