@@ -40,7 +40,7 @@ export default function Plan() {
           },
           headers: {
             "X-RapidAPI-Key":
-              "9fa0cb891emsh2fee2f76b89e6f5p15f31ajsnf7118cb0ba1f",
+              "54e6c21e26msh724b774de6cef99p14e444jsn63365d0e2398",
             "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
           },
         }
@@ -214,6 +214,7 @@ export default function Plan() {
       </div>
 
       <div className="planDisplayContainer">
+      <p>Select a category to explore</p>
         <div className="selectTypeContainer">
           <div
             onClick={() => setType("hotels")}
@@ -249,95 +250,104 @@ export default function Plan() {
         <div className="contentDisplay">
           <h4>Explore {type}</h4>
           <div className="placesContainer">
-            {places?.slice(0, 8).map((place, i) => (
-              
-              <div key={i} className="explorePlace">
-                <img
-                  src={
-                    place.photo
-                      ? place.photo.images.medium.url
-                      : "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg"
-                  }
-                  alt={place.name}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src =
-                      "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg";
-                  }}
-                />
-                <div className="explorePlaceDetails">
-                  <h5>{place.name?.split(",")[0]}</h5>
-                  <p>{parseFloat(place.distance).toFixed(2)} km</p>
-                  <div className="placeDist">
-                    <LocationOn
-                      color="black"
-                      style={{
-                        fontSize: "1.2vw",
-                      }}
-                    />
-                    <p>
-                      {place.address ? place.address : place.location_string}
-                    </p>
+            {places
+              ?.filter((place) => place.photo && place.name)
+              .map((place, i) => (
+                <div key={i} className="explorePlace">
+                  <img
+                    src={
+                      place.photo
+                        ? place.photo.images.medium.url
+                        : "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg"
+                    }
+                    alt={place.name}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src =
+                        "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg";
+                    }}
+                  />
+                  <div className="explorePlaceDetails">
+                    <h5>{place.name?.split(",")[0]}</h5>
+                    <p>{parseFloat(place.distance).toFixed(2)} km</p>
+                    <div className="placeDist">
+                      <LocationOn
+                        color="black"
+                        style={{
+                          fontSize: "1.2vw",
+                        }}
+                      />
+                      <p>
+                        {place.address ? place.address : place.location_string}
+                      </p>
+                    </div>
+                    {place.price ? (
+                      <div className="placeDist">
+                        <AttachMoney
+                          color="black"
+                          style={{
+                            fontSize: "1.2vw",
+                          }}
+                        />
+                        <p>{place.price?.replace("$", "")?.replace("$", "")}</p>
+                      </div>
+                    ) : null}
                   </div>
-                  <div className="placeDist">
-                    <AttachMoney
-                      color="black"
-                      style={{
-                        fontSize: "1.2vw",
-                      }}
-                    />
-                    <p>{place.price?.replace("$", "")?.replace("$", "")}</p>
+                  <div className="explorePlaceLinks">
+                    <div className="placeDist">
+                      <Grade
+                        color="primary"
+                        style={{
+                          fontSize: "1.2vw",
+                        }}
+                      />
+                      <p>{place.rating ? place.rating : "Not Rated"}</p>
+                    </div>
+                    <div className="">
+                      {place.website ? (
+                        <a
+                          href={place.website}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img
+                            src="/images/website.png"
+                            alt=""
+                            className="websiteLink"
+                          />
+                        </a>
+                      ) : null}
+                      <a
+                        href={`https://www.tripadvisor.com/Hotel_Review-g304551-d${place.location_id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <img
+                          src="/images/tripadvisor.png"
+                          alt=""
+                          className="tripLink"
+                        />
+                      </a>
+                    </div>
                   </div>
                 </div>
-                <div className="explorePlaceLinks">
-                  <div className="placeDist">
-                    <Grade
-                      color="primary"
-                      style={{
-                        fontSize: "1.2vw",
-                      }}
-                    />
-                    <p>{place.rating}</p>
-                  </div>
-                  <div className="">
-
-                  {place.website ? (
-                    <a href={place.website}
-                    target="_blank"
-                    rel="noreferrer"
-                    >
-                    <img
-                      src="/images/website.png"
-                      alt=""
-                      className="websiteLink"
-                    />
-                    </a>
-                  ) : null}
-                  <a
-                    href={`https://www.tripadvisor.com/Hotel_Review-g304551-d${place.location_id}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <img
-                      src="/images/tripadvisor.png"
-                      alt=""
-                      className="tripLink"
-                    />
-                  </a>
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>
-
+<div className="transportContainer">
       <div className="card-container">
+      <h1>Transportation</h1>
+      <h3>Roadways</h3>
+      <p>Save the environment by calculating the CO2 emissions produced by car for the route you selected.</p>
+      <div className="cardContainer">
+
         <div className="card">
-          <h2>Plan Your Trip</h2>
+          <h2>CO2 emission</h2>
           <p className="sub_card_heading">
-            Discover the most Eco-friendly option for your trip.
+            Predict the Carbon Dioxide produced by your car for total distance.
           </p>
+
           <form className="form">
             <div className="form-group">
               <label htmlFor="carMake">Car Manufacturer</label>
@@ -467,23 +477,33 @@ export default function Plan() {
                 ))}
               </select>
             </div>
-
+          {fuelType ? totalDistance
+          ? (
             <button type="submit" onClick={handlePlanSubmit}>
-              Plan
+              Calculate CO2
             </button>
+            )
+          :
+            (<p>Enter the route first to calculate CO2</p>
+            )
+          : null
+          }
           </form>
+        </div>
           {totalCO2 && (
-            <>
+            <div className="outputContainer">
               <p>
                 Predicted CO2 Emissions: {parseFloat(predictedCO2).toFixed(2)}{" "}
                 g/km
               </p>
               <p>Total Distance: {parseFloat(totalDistance).toFixed(2)} km</p>
               <p>Total CO2 Emissions: {parseFloat(totalCO2).toFixed(2)} kg</p>
-            </>
+            </div>
           )}
-        </div>
+      </div>
+    <p>  We recommend you to choose other sustainable alternatives.</p>
       </div>
     </div>
+</div>
   );
 }
