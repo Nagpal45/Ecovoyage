@@ -6,6 +6,18 @@ import Map from "../../components/map/map.jsx";
 import { AttachMoney, Grade, LocationOn } from "@material-ui/icons";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
+const Loading = () => {
+  return (
+    <div className="loadingContainer">
+      <div className="loading">
+        <div className="loading-spinner">
+
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Plan() {
   const [carMake, setCarMake] = useState("");
   const [carModel, setCarModel] = useState("");
@@ -25,6 +37,7 @@ export default function Plan() {
   const [bounds, setBounds] = useState(null);
   const [places, setPlaces] = useState([]);
   const [type, setType] = useState("restaurants");
+  const [loading, setLoading] = useState(false);
 
   const getPlacesData = async (type, sw, ne) => {
     try {
@@ -180,11 +193,13 @@ export default function Plan() {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
+    setLoading(true);
+setTimeout(() => {
       if (bounds?.sw && bounds?.ne) {
         getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
           setPlaces(data);
-        });
+        })
+        .finally(() => setLoading(false));
       }
     }, 1000);
   }, [type, coordinates, bounds]);
@@ -251,7 +266,9 @@ export default function Plan() {
         <div className="contentDisplay">
           <h4>Explore {type}</h4>
           <div className="placesContainer">
-            {places
+              {loading && <Loading />}
+            {!loading && 
+            places
               ?.filter((place) => place.photo && place.name)
               .map((place, i) => (
                 <div key={i} className="explorePlace">
