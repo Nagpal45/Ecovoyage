@@ -4,6 +4,7 @@ import axios from "axios";
 import Header from "./header.jsx";
 import Map from "../../components/map/map.jsx";
 import { AttachMoney, Grade, LocationOn } from "@material-ui/icons";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 export default function Plan() {
   const [carMake, setCarMake] = useState("");
@@ -214,7 +215,7 @@ export default function Plan() {
       </div>
 
       <div className="planDisplayContainer">
-      <p>Select a category to explore</p>
+        <p>Select a category to explore</p>
         <div className="selectTypeContainer">
           <div
             onClick={() => setType("hotels")}
@@ -335,175 +336,224 @@ export default function Plan() {
           </div>
         </div>
       </div>
-<div className="transportContainer">
-      <div className="card-container">
-      <h1>Transportation</h1>
-      <h3>Roadways</h3>
-      <p>Save the environment by calculating the CO2 emissions produced by car for the route you selected.</p>
-      <div className="cardContainer">
-
-        <div className="card">
-          <h2>CO2 emission</h2>
-          <p className="sub_card_heading">
-            Predict the Carbon Dioxide produced by your car for total distance.
+      <div className="transportContainer">
+        <div className="card-container">
+          <h1>Transportation</h1>
+          <h3>Roadways</h3>
+          <p>
+            Save the environment by calculating the CO2 emissions produced by
+            car for the route you selected.
           </p>
-
-          <form className="form">
-            <div className="form-group">
-              <label htmlFor="carMake">Car Manufacturer</label>
-              <select
-                id="carMake"
-                name="carMake"
-                value={carMake}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Car Manufacturer</option>
-
-                {[
-                  "ACURA",
-                  "ALFA ROMEO",
-                  "ASTON MARTIN",
-                  "AUDI",
-                  "BENTLEY",
-                  "BMW",
-                  "BUICK",
-                  "CADILLAC",
-                  "CHEVROLET",
-                  "CHRYSLER",
-                  "DODGE",
-                  "FIAT",
-                  "FORD",
-                  "GMC",
-                  "HONDA",
-                  "HYUNDAI",
-                  "INFINITI",
-                  "JAGUAR",
-                  "JEEP",
-                  "KIA",
-                  "LAMBORGHINI",
-                  "LAND ROVER",
-                  "LEXUS",
-                  "LINCOLN",
-                  "MASERATI",
-                  "MAZDA",
-                  "MERCEDES-BENZ",
-                  "MINI",
-                  "MITSUBISHI",
-                  "NISSAN",
-                  "PORSCHE",
-                  "RAM",
-                  "ROLLS-ROYCE",
-                  "SCION",
-                  "SMART",
-                  "SRT",
-                  "SUBARU",
-                  "TOYOTA",
-                  "VOLKSWAGEN",
-                  "VOLVO",
-                  "GENESIS",
-                  "BUGATTI",
-                ].map((make) => (
-                  <option key={make} value={make}>
-                    {make}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="carModel">Car Model</label>
-              <select
-                id="carModel"
-                name="carModel"
-                value={carModel}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Car Model</option>
-
-                {models.map((model) => (
-                  <option key={model} value={model}>
-                    {model}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="vehicleClass">Vehicle Class</label>
-              <select
-                id="vehicleClass"
-                name="vehicleClass"
-                value={vehicleClass}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Vehicle Class</option>
-
-                {vehicleClasses.map((vehicleClass) => (
-                  <option key={vehicleClass} value={vehicleClass}>
-                    {vehicleClass}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="transmission">Transmission</label>
-              <select
-                id="transmission"
-                name="transmission"
-                value={transmission}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Transmission</option>
-
-                {transmissions.map((transmission) => (
-                  <option key={transmission} value={transmission}>
-                    {transmission}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="fuelType">Fuel Type</label>
-              <select
-                id="fuelType"
-                name="fuelType"
-                value={fuelType}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Fuel Type</option>
-
-                {fuelTypes.map((fuelType) => (
-                  <option key={fuelType} value={fuelType}>
-                    {fuelType}
-                  </option>
-                ))}
-              </select>
-            </div>
-          {fuelType ? totalDistance
-          ? (
-            <button type="submit" onClick={handlePlanSubmit}>
-              Calculate CO2
-            </button>
-            )
-          :
-            (<p>Enter the route first to calculate CO2</p>
-            )
-          : null
-          }
-          </form>
-        </div>
-          {totalCO2 && (
-            <div className="outputContainer">
-              <p>
-                Predicted CO2 Emissions: {parseFloat(predictedCO2).toFixed(2)}{" "}
-                g/km
+          <div className="cardContainer">
+            <div className="card">
+              <h2>CO2 emission</h2>
+              <p className="sub_card_heading">
+                Predict the Carbon Dioxide produced by your car for total
+                distance.
               </p>
-              <p>Total Distance: {parseFloat(totalDistance).toFixed(2)} km</p>
-              <p>Total CO2 Emissions: {parseFloat(totalCO2).toFixed(2)} kg</p>
+
+              <form className="form">
+                <div className="form-group">
+                  <label htmlFor="carMake">Car Manufacturer</label>
+                  <select
+                    id="carMake"
+                    name="carMake"
+                    value={carMake}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select Car Manufacturer</option>
+
+                    {[
+                      "ACURA",
+                      "ALFA ROMEO",
+                      "ASTON MARTIN",
+                      "AUDI",
+                      "BENTLEY",
+                      "BMW",
+                      "BUICK",
+                      "CADILLAC",
+                      "CHEVROLET",
+                      "CHRYSLER",
+                      "DODGE",
+                      "FIAT",
+                      "FORD",
+                      "GMC",
+                      "HONDA",
+                      "HYUNDAI",
+                      "INFINITI",
+                      "JAGUAR",
+                      "JEEP",
+                      "KIA",
+                      "LAMBORGHINI",
+                      "LAND ROVER",
+                      "LEXUS",
+                      "LINCOLN",
+                      "MASERATI",
+                      "MAZDA",
+                      "MERCEDES-BENZ",
+                      "MINI",
+                      "MITSUBISHI",
+                      "NISSAN",
+                      "PORSCHE",
+                      "RAM",
+                      "ROLLS-ROYCE",
+                      "SCION",
+                      "SMART",
+                      "SRT",
+                      "SUBARU",
+                      "TOYOTA",
+                      "VOLKSWAGEN",
+                      "VOLVO",
+                      "GENESIS",
+                      "BUGATTI",
+                    ].map((make) => (
+                      <option key={make} value={make}>
+                        {make}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="carModel">Car Model</label>
+                  <select
+                    id="carModel"
+                    name="carModel"
+                    value={carModel}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select Car Model</option>
+
+                    {models.map((model) => (
+                      <option key={model} value={model}>
+                        {model}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="vehicleClass">Vehicle Class</label>
+                  <select
+                    id="vehicleClass"
+                    name="vehicleClass"
+                    value={vehicleClass}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select Vehicle Class</option>
+
+                    {vehicleClasses.map((vehicleClass) => (
+                      <option key={vehicleClass} value={vehicleClass}>
+                        {vehicleClass}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="transmission">Transmission</label>
+                  <select
+                    id="transmission"
+                    name="transmission"
+                    value={transmission}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select Transmission</option>
+
+                    {transmissions.map((transmission) => (
+                      <option key={transmission} value={transmission}>
+                        {transmission}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="fuelType">Fuel Type</label>
+                  <select
+                    id="fuelType"
+                    name="fuelType"
+                    value={fuelType}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select Fuel Type</option>
+
+                    {fuelTypes.map((fuelType) => (
+                      <option key={fuelType} value={fuelType}>
+                        {fuelType}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {fuelType ? (
+                  totalDistance ? (
+                    <button type="submit" onClick={handlePlanSubmit}>
+                      Calculate CO2
+                    </button>
+                  ) : (
+                    <p>Enter the route first to calculate CO2</p>
+                  )
+                ) : null}
+              </form>
             </div>
-          )}
-      </div>
-    <p>  We recommend you to choose other sustainable alternatives.</p>
+           
+              <div className="outputContainer">
+                <div className="progressBarContainer">
+                  <div className="progressBar">
+                  <p>CO2 Emission</p>
+                    <CircularProgressbar
+                      className= "progressbar"
+                      value={parseFloat(predictedCO2 / 5)}
+                      text={`${parseFloat(predictedCO2).toFixed(2)} g/km`}
+                      styles={buildStyles({
+                        textColor: "#1F2937",
+                        pathColor: "#10B981",
+                        trailColor: "#D1D5DB",
+                        pathTransitionDuration: 1,
+                        textSize: "0.8vw",
+                        strokeLinecap: "round",
+                      })}
+                    />
+                  </div>
+
+                  <div className="progressBar">
+                  <p>Distance</p>
+                    <CircularProgressbar
+                    className= "progressbar"
+                      value={parseFloat(totalDistance/5)}
+                      text={`${parseFloat(totalDistance).toFixed(
+                        2
+                      )} km`}
+                      styles={buildStyles({
+                        textColor: "#1F2937",
+                        pathColor: "#FBBF24",
+                        trailColor: "#D1D5DB",
+                        pathTransitionDuration: 0.5,
+                        textSize: "0.8vw",
+                        strokeLinecap: "round",
+                      })}
+                    />
+                  </div>
+
+                  <div className="progressBar">
+                  <p>Total CO2</p>
+                    <CircularProgressbar
+                    className= "progressbar"
+                      value={parseFloat(totalCO2/5)}
+                      text={`${parseFloat(totalCO2).toFixed(2)} kg`}
+                      styles={buildStyles({
+                        textColor: "#1F2937",
+                        pathColor: "#EF4444",
+                        trailColor: "#D1D5DB",
+                        pathTransitionDuration: 0.5,
+                        textSize: "0.8vw",
+                        strokeLinecap: "round",
+                      })}
+                    />
+                  </div>
+                </div>
+              </div>
+          
+          </div>
+          <p> We recommend you to choose other sustainable alternatives.</p>
+        </div>
       </div>
     </div>
-</div>
   );
 }
