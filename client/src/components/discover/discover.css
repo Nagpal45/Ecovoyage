@@ -25,16 +25,22 @@
     flex-direction: column;
     flex-wrap: wrap;
     width: 17vw;
-    margin: 0 2.5vw 2vw 0;
+    margin: 0 1.5vw 1.7vw 0;
       position: relative;
       overflow: hidden;
       transition: filter 0.3s ease;
+      margin-bottom: 2vw;
+      z-index: 1;
+      transition: transform 0.5s ease;
+    
     
   }
   
   .hotel:hover {
-    transform: scale(1.05); 
+    transform: scale(1.17); 
     filter: brightness(70%);
+    transition: all 0.4s ease-out;
+    z-index: 2;
   }
   .hotel-image {
     position: relative;
@@ -113,29 +119,33 @@
     transform: translate(-50%, -50%);
     text-align: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.1s ease;
+    z-index: 999;
+    font-weight: 600;
   }
   
   .hotel:hover .hotel-button {
     opacity: 1;
   }
   
-  .hotel-button h3 {
-    margin: 0;
-    color: #fff;
-  }
+  
   
   .hotel-button {
     background: none;
     border: none;
     color: white;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 22px;
     padding: 10px 20px;
-    text-decoration: underline;
     transition: 0.3s ease;
-    filter: brightness(100%);
-   /* Button background color */
+    filter: brightness(200%);
   }
 
- 
+
+  .hotel-button:hover svg {
+    transform: translateX(10px);
+    transition: 0.5s ease;
+  } 
+
+
+  
