@@ -517,7 +517,7 @@ setTimeout(() => {
                     <CircularProgressbar
                       className= "progressbar"
                       value={parseFloat(predictedCO2 / 5)}
-                      text={`${parseFloat(predictedCO2).toFixed(2)} g/km`}
+                      text={predictedCO2 ? `${parseFloat(predictedCO2).toFixed(2)} g/km` : ""}
                       styles={buildStyles({
                         textColor: "#1F2937",
                         pathColor: "#10B981",
@@ -534,9 +534,9 @@ setTimeout(() => {
                     <CircularProgressbar
                     className= "progressbar"
                       value={parseFloat(totalDistance/5)}
-                      text={`${parseFloat(totalDistance).toFixed(
+                      text={totalDistance ? `${parseFloat(totalDistance).toFixed(
                         2
-                      )} km`}
+                      )} km` : ""}
                       styles={buildStyles({
                         textColor: "#1F2937",
                         pathColor: "#FBBF24",
@@ -553,7 +553,7 @@ setTimeout(() => {
                     <CircularProgressbar
                     className= "progressbar"
                       value={parseFloat(totalCO2/5)}
-                      text={`${parseFloat(totalCO2).toFixed(2)} kg`}
+                      text={totalCO2 ? `${parseFloat(totalCO2).toFixed(2)} kg` : ""}
                       styles={buildStyles({
                         textColor: "#1F2937",
                         pathColor: "#EF4444",
