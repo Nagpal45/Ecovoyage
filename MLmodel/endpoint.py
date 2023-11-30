@@ -31,9 +31,9 @@ class CustomLinearRegression:
 app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": ["http://localhost:3000"]}})
 CORS(app, resources={r"/carData/*": {"origins": ["http://localhost:3000"]}})
-model = joblib.load('C:/Users/ASUS/Desktop/Ecovoyage/co2_emissions_model.pkl')
+model = joblib.load('./co2_emissions_model.pkl')
 
-training_data = pd.read_csv('C:/Users/ASUS/Desktop/Ecovoyage/MLmodel/co2_emissions.csv')
+training_data = pd.read_csv('../co2_emissions.csv')
 features = ['carMake', 'carModel', 'vehicleClass', 'transmission', 'fuelType']
 df_encoded = pd.get_dummies(training_data[features])
 
