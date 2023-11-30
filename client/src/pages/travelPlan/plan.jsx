@@ -3,8 +3,10 @@ import "./plan.css";
 import axios from "axios";
 import Header from "./header.jsx";
 import Map from "../../components/map/map.jsx";
-import { AttachMoney, Grade, LocationOn } from "@material-ui/icons";
+import { AttachMoney, Check, Grade, LocationOn } from "@material-ui/icons";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import Result from "./result.jsx";
+
 
 const Loading = () => {
   return (
@@ -18,7 +20,7 @@ const Loading = () => {
   );
 };
 
-export default function Plan() {
+function Plan() {
   const [carMake, setCarMake] = useState("");
   const [carModel, setCarModel] = useState("");
   const [vehicleClass, setVehicleClass] = useState("");
@@ -54,7 +56,7 @@ export default function Plan() {
           },
           headers: {
             "X-RapidAPI-Key":
-              "54e6c21e26msh724b774de6cef99p14e444jsn63365d0e2398",
+              "f2f7ad5a86msh0ca98e3b7d47ad7p12de45jsn20134426330d",
             "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
           },
         }
@@ -204,8 +206,32 @@ setTimeout(() => {
     }, 1000);
   }, [type, coordinates, bounds]);
 
+  const [selectedHotel, setSelectedHotel] = useState(null);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [selectedAttraction, setSelectedAttraction] = useState(null);
+  const [result, setResult] = useState(false);
+
+  const handlePlaceSelect = (place) => {
+    if(type === "hotels"){
+        setSelectedHotel([place]);
+        console.log(selectedHotel);
+    }
+    else if(type === "restaurants"){
+        setSelectedRestaurant([ place]);
+        setTimeout(() => {
+            console.log(selectedRestaurant);
+        }, 1000);
+    }
+    else if(type === "attractions"){
+        setSelectedAttraction([place]);
+    }
+    console.log(selectedHotel, selectedRestaurant, selectedAttraction);
+  };
+
   return (
     <div className="travelPlanPage">
+    {result ? <Result selectedHotel={selectedHotel} selectedRestaurant={selectedRestaurant} selectedAttraction={selectedAttraction} setResult={setResult} totalDistance={totalDistance} totalCO2 = {totalCO2} /> : (
+      <>
       <div className="subNavbar">
         <div className="subNavbar-group">
           <p>From</p>
@@ -272,6 +298,15 @@ setTimeout(() => {
               ?.filter((place) => place.photo && place.name)
               .map((place, i) => (
                 <div key={i} className="explorePlace">
+                <button onClick={() => handlePlaceSelect(place)} className="placeSelect">
+                {
+                  selectedHotel?.find((selectedPlace) => selectedPlace.location_id === place.location_id) ||
+                  selectedRestaurant?.find((selectedPlace) => selectedPlace.location_id === place.location_id) ||
+                  selectedAttraction?.find((selectedPlace) => selectedPlace.location_id === place.location_id) ? (
+                    <Check />
+                  ) : null
+                }
+                </button>
                   <img
                     src={
                       place.photo
@@ -570,7 +605,16 @@ setTimeout(() => {
           </div>
           <p> We recommend you to choose other sustainable alternatives.</p>
         </div>
+          {
+             totalDistance && (selectedAttraction || selectedHotel || selectedRestaurant) ? (
+              <button className="showResultButton" onClick={() => setResult(true)}>Review Trip</button>
+            ) : null
+          }
       </div>
+      </>
+      )}
     </div>
   );
 }
+
+export default Plan;
