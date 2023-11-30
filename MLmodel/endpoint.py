@@ -2,6 +2,31 @@ from flask import Flask, request, jsonify
 import joblib
 import pandas as pd
 from flask_cors import CORS
+import numpy as np
+
+class CustomLinearRegression:
+    def __init__(self, learning_rate=0.01, n_iterations=1000, alpha=0.1):
+        self.alpha = alpha
+        self.learning_rate = learning_rate
+        self.n_iterations = n_iterations
+        self.weights = None
+        self.bias = None
+
+    def fit(self, X, y):
+        self.weights = np.zeros(X.shape[1])
+        self.bias = 0
+
+        for _ in range(self.n_iterations):
+            predictions = self.predict(X)
+            gradient_weights = -(2/X.shape[0]) * np.dot(X.T, (y - predictions))
+            gradient_bias = -(2/X.shape[0]) * np.sum(y - predictions)
+
+            self.weights -= self.learning_rate * gradient_weights
+            self.bias -= self.learning_rate * gradient_bias
+
+    def predict(self, X):
+        return np.dot(X, self.weights) + self.bias
+
 
 app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": ["http://localhost:3000"]}})
