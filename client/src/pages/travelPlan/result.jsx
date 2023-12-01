@@ -10,6 +10,28 @@ export default function Result({
   totalDistance,
   totalCO2
 }) {
+  const [totalCost, setTotalCost] = React.useState(0);
+
+  const parsePriceRange = (priceRange) => {
+    const cleanPrice = priceRange.replace(/[^\d.-]/g, ''); 
+  const [minPrice, maxPrice] = cleanPrice.split("-").map(Number);
+    return (parseFloat(minPrice) + parseFloat(maxPrice)) / 2;
+  };
+
+  const calculateTotalCost = () => {
+    const hotelCost = selectedHotel && selectedHotel[0]?.price ? parsePriceRange(selectedHotel[0].price) : 500;
+    const restaurantCost = selectedRestaurant && selectedRestaurant[0]?.price ? parsePriceRange(selectedRestaurant[0].price) : 1000;
+    const attractionCost = selectedAttraction && selectedAttraction[0]?.price ? parsePriceRange(selectedAttraction[0].price) : 500;
+
+    setTotalCost(hotelCost + restaurantCost + attractionCost);
+  };
+
+  React.useEffect(() => {
+    setTimeout(() => {
+    calculateTotalCost();
+    }, 3000);
+  }, []);
+
   return (
     <div className="result">
       <ArrowBack
@@ -209,14 +231,14 @@ export default function Result({
         </>) : null}
       </div>
       <div className="resultInfo">
-        <h3>Total Cost</h3>
+        <h3>Summary</h3>
         <div className="resultInfoDetails">
           <div className="resultInfoDetail">
             <h5>Hotel</h5>
             <p>
               {selectedHotel && selectedHotel[0]?.price
                 ? selectedHotel[0].price
-                : "$" + 300}
+                : "$" + 500}
             </p>
           </div>
           <div className="resultInfoDetail">
@@ -234,6 +256,10 @@ export default function Result({
                 ? selectedAttraction[0].price
                 : "$" + 500}
             </p>
+          </div>
+          <div className="resultInfoDetail">
+            <h5>Total Cost</h5>
+            <p>${totalCost}</p>
           </div>
           <div className="resultInfoDetail">
             <h5>Distance</h5>
