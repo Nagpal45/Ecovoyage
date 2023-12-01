@@ -86,6 +86,7 @@ export default function Navbar() {
       }, 0);
     }
     if(sectionId === "travelPlan"){
+      window.scrollTo({ top: 0, behavior: "smooth" });
       if(user ){
         navigate("/plan");
       }

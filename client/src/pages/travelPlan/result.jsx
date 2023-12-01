@@ -29,7 +29,7 @@ export default function Result({
   React.useEffect(() => {
     setTimeout(() => {
     calculateTotalCost();
-    }, 3000);
+    }, 2000);
   }, []);
 
   return (
