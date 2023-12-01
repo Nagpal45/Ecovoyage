@@ -5,8 +5,8 @@ import Header from "./header.jsx";
 import Map from "../../components/map/map.jsx";
 import { AttachMoney, Check, Grade, LocationOn } from "@material-ui/icons";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import Result from "./result.jsx";
-
+import { useParams } from "react-router-dom";
+import Result from "./result.jsx"
 
 const Loading = () => {
   return (
@@ -40,6 +40,16 @@ function Plan() {
   const [places, setPlaces] = useState([]);
   const [type, setType] = useState("restaurants");
   const [loading, setLoading] = useState(false);
+
+
+  const { Dlat, Dlong } = useParams();
+  
+  useEffect(() => { 
+    console.log('Dlat:', Dlat); 
+     console.log('Dlong:', Dlong);
+     }, [Dlat, Dlong]);
+
+
 
   const getPlacesData = async (type, sw, ne) => {
     try {
