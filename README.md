@@ -105,5 +105,3 @@ Run the learning script and start the endpoint:
 python app.py       # Trains and dumps the model to .pkl
 python endpoint.py  # Starts the Python server and predictions
 ```
-
-<p align="center">Made with ❤️ for a Greener Planet.</p>
